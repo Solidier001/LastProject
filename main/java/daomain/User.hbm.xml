@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="daomain">
+    <class name="daomain.User" table="User">
+        <!--主键-->
+        <id name="id" type="java.lang.String" column="c_id">
+            <generator class="util.UserKeyGenreater"/>
+        </id>
+        <!--其他属性-->
+        <property name="password" type="java.lang.String" column="c_password"/>
+        <property name="name" type="java.lang.String" column="c_name"/>
+    </class>
+</hibernate-mapping>

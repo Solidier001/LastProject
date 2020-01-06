@@ -1,0 +1,25 @@
+.alert{
+    color: rgb(219, 15, 15);
+    text-align: right;
+}
+input[type="submit"]{
+     margin-left: 179px;
+}
+input[type="password"],[type="text"]{
+    height: 20px;
+    width: 152px;
+}
+.error{
+    color: rgb(228, 30, 30);
+    font-size: 10px;
+}
+div[class="alert"]{
+    display: inline;
+}
+.notify{
+    color: rgb(67, 105, 228);
+    float: right;
+}
+#form{
+    width: 400px;
+}

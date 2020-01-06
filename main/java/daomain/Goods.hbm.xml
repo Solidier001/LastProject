@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="daomain">
+    <class name="daomain.Goods" table="Goods">
+        <id name="id" type="java.lang.String" column="g_id">
+            <generator class="uuid"/>
+        </id>
+        <property name="name" type="java.lang.String" column="g_name"/>
+        <property name="price" type="int" column="g_price"/>
+        <property name="detail" type="java.lang.String" column="g_detail"/>
+        <property name="pictures" type="java.lang.String" column="pictures"/>
+        <property name="times" type="int" column="g_times"/>
+    </class>
+</hibernate-mapping>
