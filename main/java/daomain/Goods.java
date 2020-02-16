@@ -1,5 +1,7 @@
 package daomain;
 
+import java.util.Set;
+
 public class Goods {
     private String pictures;
     private String detail;
@@ -7,6 +9,24 @@ public class Goods {
     private int price;
     private String id;
     private int times;
+    private User user;
+    private Set<daomain.Orders> Orders;
+
+    public Set<daomain.Orders> getOrders() {
+        return Orders;
+    }
+
+    public void setOrders(Set<daomain.Orders> orders) {
+        Orders = orders;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public int getTimes() {
         return times;

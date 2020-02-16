@@ -1,0 +1,285 @@
+html,body{
+    margin: 0;
+    width: 100%;
+    font-size: 14px;
+}
+hr{
+    width: 100px;
+}
+.step{
+    width: 100%;
+    height: 10em;
+}
+.mycontainer{
+    font-size: 14px;
+    width: 80em;
+    margin: 0 auto;
+}
+.stepshow{
+    width: 60%;
+    height: 100%;
+    margin-left: 40%;
+}
+.bar{
+    background-color: rgb(245, 245, 245);
+    border-bottom: 1px solid rgb(235, 235, 235);
+    height: 25px;
+    width: 100%;
+}
+.steprow,.guiderow{
+    height: 5em;
+    width: 100%;
+    float: none;
+}
+hr{
+    border:none;
+    height: 1px;
+    background-color: rgb(187, 187, 187);
+    margin-top: 3.65em;
+    float: left;
+    width: 9em;
+}
+.stepbox{
+    margin:0 1em;
+    float: left;
+    margin-top: 2.5em;
+    height: 2.5em;
+    width: 2.5em;
+    border: 1px solid gray;
+    line-height: 2.5em;
+    text-align: center;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+.steprow:before{  
+    content: "";  
+    display: table;  
+}
+.guiderbox{
+    overflow: hidden;;
+    float: left;
+    text-align: center;
+    width: 4.5em;
+    font-size: 15px;
+    font-weight: bolder;
+    margin-right: 8.2em;
+}
+.guiderboxNomargin{
+    float: left;
+    text-align: center;
+    width: 4.5em;
+    font-size: 15px;
+    font-weight: bolder;
+}
+.thispagebox{
+    background-color: red;
+    color: #fff;
+    border-color: transparent;
+}
+.ordertable{
+    width: 100%;
+    height: 15em;
+}
+.ordertable>table{
+    width: 100%;
+    height: 10em;
+}
+th{
+    height: 3em;
+    border: 3px solid #fff;
+    border-bottom: 3px solid rgb(191, 240, 255);
+    vertical-align: bottom;
+}
+td{
+    height: 5em;
+    text-align: left;
+    vertical-align: baseline;
+    background-color: #efffff;
+    font-size: 16px;
+}
+td[colspan='5']{
+    height: 4em;
+    vertical-align: bottom;
+    text-align: left;
+    background-color: transparent;
+    font-size: 14px;
+}
+table{
+    border-collapse: collapse;
+}
+.td>td:nth-child(2){
+    font-weight: bolder;
+    color: red;
+}
+.paybox{
+    margin-top: 4em;
+    height: auto;
+    padding-bottom: 2em;
+    width: 30em;
+    /* float: right; */
+    margin-left: auto;
+    border: 1px solid red;
+}
+.payrow{
+    width: 100%;
+    height: 4em;
+    float: none;
+}
+.paylable{
+    text-align: end;
+    line-height: 90px;
+    float: right;
+    height: 100%;
+    width: 5em;
+}
+.cashsymblo{
+    text-align: left;
+    margin-top: 28px;
+    width: 25px;
+    height: 28px;
+    float: right;
+    font-size: 25px;
+    color: rgb(187, 187, 187);
+}
+.price{
+    float: right;
+    margin-top: 30px;
+    color: red;
+    font-size: 20px;
+    font-weight: bolder;
+}
+.ordertabletitle{
+    font-weight: bolder;
+    height: 1em;
+}
+#submitorder{
+    outline: none;
+    float: right;
+    border: 1px solid red;
+    border-top: 0px;
+    background-color: red;
+    color: #fff;
+    width: 12em;
+    height: 3em;
+    cursor: pointer;
+}
+#submitorder:active{
+    background-color: rgb(255, 114, 114);
+    border-color: rgb(255, 114, 114);
+    outline: none;
+}
+ ul{
+    list-style-type: none;
+    height: auto;
+}
+ li{
+     cursor: pointer;
+     height: 35px
+    }
+input[type='radio']{
+    margin: 0;
+    width: 1.3em;
+    height: 1.3em;
+    display: none;
+}
+
+input[type='radio']+div{
+    display: inline-block;;
+    width: 1em;
+    height: 1em;
+    border: 1px solid rgb(201, 201, 201);
+    border-radius: 50%;
+    -webkit-border-radius:50%;
+    -moz-border-radius:50%;
+    -ms-border-radius:50%;
+    -o-border-radius:50%;
+    vertical-align: middle;
+}
+li{
+    line-height: 2.3em;
+}
+input[type='radio']:checked+div{
+    width: 0.3em;
+    height: 0.3em;
+    border: 0.45em solid rgb(253, 81, 81);
+}
+input[type='radio']+div+label{
+    cursor: pointer;
+}
+li:hover{
+    background-color: rgb(211, 248, 248) !important;
+}
+li:hover>label{
+    background-color: rgb(211, 248, 248);
+}
+li:hover>.myradio{
+    background-color: rgb(255, 144, 144);
+}
+li:hover>input[type='radio']:checked+div{
+    background-color: #fff;
+}
+input[type='radio']:checked+div+label{
+    font-weight: bolder;
+}
+.fa-map-marker{
+    color: rgb(255, 94, 0);
+}
+li>.location{
+    display: inline-block;
+    margin: 0 2.5em;
+    color: rgb(255, 94, 0);
+    opacity: 0;
+}
+.paybox>label{
+    font-weight: bolder;
+    display: inline-block;
+}
+.paybox>.location{
+    display: inline-block;
+    font-size: 8px;
+}
+.paybox>.location+label{
+    font-weight: bolder;
+}
+#myDialog{
+    border: 1px solid #a0a0a0;
+    width: 200px;
+    padding: 0;
+}
+.menubar{
+    width: 100%;
+    height: 25px;
+    overflow: hidden;
+    border-bottom: 1px solid rgb(168, 167, 167);
+}
+#myDialog>.container{
+    height: auto
+
+}
+.fa-times{
+    margin-top: 5px;
+    margin-right: 3px;
+    vertical-align: middle;
+    float: right;
+    color: rgb(161, 159, 159);
+    cursor: pointer;
+}
+#myDialog>.container>div{
+    text-align: center;
+    margin: 3px;
+}
+#myDialog button{
+    display: block;
+    margin: 3px auto;
+    background-color: rgb(128, 202, 252);
+    border: 1px solid rgb(128, 202, 252);
+    color: #fff;
+    outline: none !important;
+    cursor: pointer;
+}
+.fa-times:active{
+    color: rgb(210, 210, 210);
+}

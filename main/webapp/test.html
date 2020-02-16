@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+</head>
+<script type="text/javascript">
+
+    function Message(to, text) {
+        this.to = to;
+        this.message = text;
+        this.date = null;
+        this.form = null;
+        this.id = null;
+        this.name = null;
+    }
+    var ws;
+    function hello(id,name){
+        ws = new WebSocket("ws://localhost:8080/helloWebSocket?id="+id+"&name="+name);
+        ws.onopen = function(evn){
+            console.log(evn);
+        };
+        ws.onmessage = function(evn){
+            console.log(evn.data);
+            var dv = document.getElementById("dv");
+            dv.innerHTML+=evn.data;
+        };
+        ws.onclose = function(){
+            console.log("关闭");
+        };
+
+    };
+    function subsend(){
+        var message = new Message($("#to").val(), $("#msg").val());
+        var messagestr = JSON.stringify(message);
+        ws.send(messagestr);
+    }
+</script>
+<body>
+<h2>Hello World!</h2>
+<div id="dv" />
+<input type="text" name="name" placeholder="name">
+<input type="text" name="id" placeholder="id">
+<input type="text" id="to" placeholder="navid">
+<input type="button" value="连接" name="link"/>
+<input type="text" id ="msg" /><input type="button" onclick="subsend()" value="发送" />
+<script>
+    $("input[name='link']").click(function () {
+        hello($("input[name='id']").val(),$("input[name='name']").val())
+    })
+</script>
+</body>
+</html>
+</html>

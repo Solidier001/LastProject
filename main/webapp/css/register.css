@@ -1,25 +1,32 @@
-.alert{
-    color: rgb(219, 15, 15);
-    text-align: right;
+body{
+    background-image: url("/img/webpage/doodles.png");
 }
-input[type="submit"]{
-     margin-left: 179px;
+#regiter-form{
+    background-color: #dafcf618;
+    border: #696969 solid 1px;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 5%;
 }
-input[type="password"],[type="text"]{
-    height: 20px;
-    width: 152px;
+.title{
+    width: 6em;
+    height: 70px;
+    line-height: 70px;
+    font-size: 30px;
+    margin: 0 auto;
 }
-.error{
-    color: rgb(228, 30, 30);
-    font-size: 10px;
+.input,.layui-input-inline>.input[type='text']{
+    /* width: 20%; */
+    border:none;
+    height: 35px;
+    background-color: transparent;
 }
-div[class="alert"]{
-    display: inline;
-}
-.notify{
-    color: rgb(67, 105, 228);
-    float: right;
-}
-#form{
-    width: 400px;
-}
+.layui-input-inline,.input[type='text']{
+    border-bottom: #DCDCDC solid 1px;
+ }
+.layui-icon-password{
+    color:#808080;
+    cursor: pointer;  
+} 

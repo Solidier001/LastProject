@@ -4,12 +4,21 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="daomain">
     <class name="daomain.User" table="User">
-        <!--主键-->
         <id name="id" type="java.lang.String" column="c_id">
             <generator class="util.UserKeyGenreater"/>
         </id>
-        <!--其他属性-->
         <property name="password" type="java.lang.String" column="c_password"/>
         <property name="name" type="java.lang.String" column="c_name"/>
+        <property name="sex" type="java.lang.String" column="c_sex"/>
+        <property name="nickname" type="java.lang.String" column="c_nickname"/>
+        <property name="locations" type="java.lang.String" column="c_locations"/>
+        <set name="Goods" cascade="all" lazy="false">
+            <key column="c_id"/>
+            <one-to-many class="Goods"/>
+        </set>
+        <set name="Orders" cascade="all" lazy="false">
+            <key column="o_id"/>
+            <one-to-many class="Orders"/>
+        </set>
     </class>
 </hibernate-mapping>

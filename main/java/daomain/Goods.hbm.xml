@@ -12,5 +12,10 @@
         <property name="detail" type="java.lang.String" column="g_detail"/>
         <property name="pictures" type="java.lang.String" column="pictures"/>
         <property name="times" type="int" column="g_times"/>
+        <many-to-one name="user" class="daomain.User" lazy="false" column="c_id" cascade="all"/>
+        <set name="Orders" cascade="all" lazy="false">
+            <key column="o_id"/>
+            <one-to-many class="Orders"/>
+        </set>
     </class>
 </hibernate-mapping>

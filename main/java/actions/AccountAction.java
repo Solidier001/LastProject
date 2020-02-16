@@ -2,44 +2,32 @@ package actions;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import daomain.Goods;
+import daomain.Orders;
 import daomain.User;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import service.GoodsService;
+import service.MessageService;
+import service.UserService;
 import util.OrmService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 public class AccountAction extends ActionSupport implements ModelDriven<User> {
-    HttpServletRequest request = ServletActionContext.getRequest();
-    HttpSession session=request.getSession();
-    WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-    OrmService service = (OrmService) wac.getBean("OrmService");
+    private HttpServletRequest request = ServletActionContext.getRequest();
+    private HttpSession session=request.getSession();
+    private WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
+    private OrmService service = (OrmService) wac.getBean("OrmService");
+    private UserService userService=(UserService) wac.getBean("UserService");
+    private GoodsService goodsService=(GoodsService)wac.getBean("GoodsService");
     private User user = new User();
-    private String id;
-    private String password;
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-
     public String login() {
-        System.out.println(id);
-        User sample = (User) service.read(User.class.getName(), id);
-        if (sample.getPassword().equals(password)){
+        System.out.println((String) session.getAttribute("request"));
+       User sample = (User) service.read(User.class.getName(), user.getId());
+        if (sample.getPassword().trim().equals(user.getPassword().trim())){
             session.setAttribute("user",sample);
             return SUCCESS;
         }
@@ -48,6 +36,7 @@ public class AccountAction extends ActionSupport implements ModelDriven<User> {
     }
 
     public String rigister() {
+        user.setLocations(userService.initLocations());
         service.save(user);
         return SUCCESS;
     }
@@ -57,6 +46,15 @@ public class AccountAction extends ActionSupport implements ModelDriven<User> {
         return SUCCESS;
     }
     public String buy(){
+        Orders order=new Orders();
+        Goods goods=new Goods();
+        goods.setId(request.getParameter("goodid"));
+        order.setPaymethod(request.getParameter("paymethod"));
+        order.setNunber(1);
+        order.setUser(user);
+        order.setGood(goods);
+        order.setDate(new Date());
+        service.save(order);
         return SUCCESS;
     }
     @Override

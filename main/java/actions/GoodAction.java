@@ -1,23 +1,24 @@
 package actions;
 
+import ActionExtension.MoreResult;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import daomain.Goods;
+import daomain.User;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import service.GoodsService;
 import util.OrmService;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
-public class GoodAction extends ActionSupport implements ModelDriven<Goods> {
-    private String id;
+public class GoodAction extends ActionSupport implements ModelDriven<Goods>, MoreResult {
     private File[] image;
     private String[] imageFileName;
     private String[] imageContentType;
@@ -26,7 +27,7 @@ public class GoodAction extends ActionSupport implements ModelDriven<Goods> {
     HttpSession session = request.getSession();
     WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
     OrmService service = (OrmService) wac.getBean("OrmService");
-
+    GoodsService goodsService = (GoodsService) wac.getBean("GoodsService");
     public File[] getImage() {
         return image;
     }
@@ -49,14 +50,6 @@ public class GoodAction extends ActionSupport implements ModelDriven<Goods> {
 
     public void setImageContentType(String[] imageContentType) {
         this.imageContentType = imageContentType;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     @Override
@@ -82,20 +75,42 @@ public class GoodAction extends ActionSupport implements ModelDriven<Goods> {
                 }
                 good.setTimes(0);
                 good.setPictures(picturedir1);
+                User user=(User) session.getAttribute("user");
+                good.setUser(user);
                 service.save(good);
             }
         } catch (IOException e) {
-
             e.printStackTrace();
             return ERROR;
         }
         return SUCCESS;
     }
     public String readGood(){
-        id=request.getParameter("id");
-        Goods sample = (Goods) service.read(Goods.class.getName(), id);
-
+        ArrayList<String> imglist=new ArrayList<>();
+        Goods sample = (Goods) service.read(Goods.class.getName(), good.getId());
+        String realpath = ServletActionContext.getServletContext().getRealPath(sample.getPictures());
+        File dir=new File(realpath);
+        String imgname;
+        for (File img:dir.listFiles()){
+            imgname=img.getName();
+            if (!imgname.contains("min")){
+                imglist.add(sample.getPictures()+'/'+imgname);
+            }
+        }
         request.setAttribute("sample", sample);
+        request.setAttribute("pictures",imglist);
+        return SUCCESS;
+    }
+    public String secrch(){
+        ArrayList<Goods> list=goodsService.findGoodsByname(good.getName());
+        request.setAttribute("allgoods",list);
+        return SUCCESS;
+    }
+    public String makeorder(){
+        good=(Goods) service.read(Goods.class.getName(),good.getId());
+        User user= good.getUser();
+        request.setAttribute("user",user);
+        request.setAttribute("good",good);
         return SUCCESS;
     }
 }

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="/css/message.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="tittle">消息</div>
+    <div class="content">
+        <div class="show">
+            <div class="img"></div>
+        </div>
+        <div class="userlist">
+            <div class="serchbox">
+                <div>
+                    <input type="text" placeholder="搜索">
+                    <button type="button"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+            <div class="user userbeforclick" uid="#123">
+                <div class="userlable">
+                    <div class="img"></div>
+                    <div class="detail">
+                        <div class="name">123</div>
+                        <div class="message"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="messagebox">
+            <div></div>
+            <div class="mseeagelistbox">
+                <!--<div id="123" class="mseeagelist mseeagelistbeforclick" >
+                    <div class="message messageto">
+                        <div class="label">
+                            <div class="img"></div>
+                        </div>
+                        <div class="username">1234</div>
+                        <embed src="/svg/messagebubbleto.svg" type="image/svg+xml" />
+                        <div>111111</div>
+                    </div>
+                    <div class="message messageform">
+                        <div class="label">
+                            <div class="img"></div>
+                        </div>
+                        <div class="username">1234</div>
+                        <embed src="/svg/messagebubblefrom.svg" type="image/svg+xml" />
+                        <div>111111</div>
+                    </div>
+                </div>-->
+            </div>
+            <div class="inputfield">
+                <input type="text">
+                <i class="fa fa-smile-o fa-2x"></i>
+                <embed src="/svg/plus.svg" type="image/svg+xml" />
+                <button type="button">发送</button>
+            </div>
+        </div>
+    </div>
+    <script src="/js/message.js"></script>
+</body>
+
+</html>

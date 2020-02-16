@@ -1,0 +1,103 @@
+
+.content{
+    margin: 9px;
+    width: auto;
+    height: auto;
+}
+.price{
+    color:rgb(255, 64, 64);
+    font-size: 30px;
+}
+#tittle{
+    text-align: center;
+    line-height: 152px;
+    width: 100%;
+    height: 152px;
+    background-color: rgb(233, 233, 233);
+    font-size: 40px;
+    font-family: "黑体";
+    color:rgb(133, 49, 16);
+    font-weight: bolder;
+}
+.serch-box{
+    width: 100%;
+    height: 125px;
+}
+form{
+    margin-top: 40px;
+    margin-bottom: 0px;
+    margin-left: auto;
+    margin-right:auto ;
+    overflow: hidden;
+    height: 40px;
+    width: 498px;
+}
+input[type='text']{
+    float: left;
+    height: 24px;
+    width: 426px;
+    margin: 2px;
+    border-color: transparent;
+}
+.button{
+    cursor: pointer;
+    font-size: 16px;
+    float: left;
+    height: 36px;
+    width: 60px;
+    background-color: #f30213;
+    color: #fff;
+    border:2px solid #f30213;
+} 
+.text-box{
+    height: 32px;
+    width: 434px;
+    overflow: hidden;
+    float: left;
+    border:2px solid #f30213;
+}
+ul{
+    margin: 0 auto;
+    width: 100%;
+    float: none;
+}
+.content-box{
+    height: 330px;
+    width: 230px;
+    float: left;
+    overflow: hidden;
+    margin: 6px;
+}
+.describe{
+    font-size: 1px;
+    text-overflow: ellipsis;
+    width: 100%;
+    height: 3em;
+}
+.container{
+    width: 90%;
+    margin: 0 auto;
+}
+.li-box{
+    height: 98%;
+    width: 98%;
+    overflow: hidden;
+    border:1px solid transparent
+}
+.li-box:hover{
+    border:1px solid #f30213;
+}
+.mycontainer{
+    width: 1100px;
+    margin-left: 100px;
+}
+li{
+    margin: 2px;
+    display: inline-block;
+}
+ul+div{
+    margin: 0 auto !important;
+    background-color: aqua;
+    width: 50px;
+    width: 10px;
+}

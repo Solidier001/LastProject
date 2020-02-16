@@ -5,6 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.5.dtd">
 
 <struts>
+    <constant name="struts.action.excludePattern" value=".*Socket"/>
     <constant name="struts.devMode" value="true" />
     <package name="Test" extends="struts-default" namespace="/test">
         <action name="save" class="actions.TestAction" method="save">
@@ -17,7 +18,7 @@
     <package name="Account" extends="struts-default" namespace="/project/account">
         <action name="login" class="actions.AccountAction" method="login">
             <result name="success">/result.jsp</result>
-            <result name="false">/index.jsp</result>
+            <result name="false">/index.html</result>
         </action>
         <action name="rigister" class="actions.AccountAction" method="rigister">
             <result type="redirect">/index.jsp</result>
@@ -26,20 +27,41 @@
             <result name="success">/index.jsp</result>
         </action>
         <action name="buy" class="actions.AccountAction" method="buy">
-            <result name="success"></result>
+           <result>/test.jsp</result>
         </action>
     </package>
     <package name="Good" extends="struts-default" namespace="/project/good">
         <action name="upgood" class="actions.GoodAction" method="upGood">
-            <result name="success">/upgoods.jsp</result>
+            <result name="success">/upgoods.html</result>
         </action>
         <action name="readGood" class="actions.GoodAction" method="readGood">
             <result name="success">/gooddetile.jsp</result>
         </action>
+        <action name="secrch" class="actions.GoodAction" method="secrch">
+            <result name="success">/fistpage.jsp</result>
+        </action>
+        <action name="makeorder" class="actions.GoodAction" method="makeorder">
+            <result name="success">/pay.jsp</result>
+        </action>
     </package>
     <package name="Page" extends="struts-default" namespace="/project/page">
         <action name="readAll" class="actions.PageAction" method="allGoods">
-            <result name="success">/fistpage.jsp</result>
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+        <action name="listNumber" class="actions.PageAction" method="listNumber">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+        <action name="getMessages" class="actions.PageAction" method="getMessages">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
         </action>
     </package>
 </struts>

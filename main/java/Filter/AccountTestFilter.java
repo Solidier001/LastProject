@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,19 +19,39 @@ public class AccountTestFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpSession session = request.getSession();
         HttpServletResponse response = (HttpServletResponse) resp;
-        String url=request.getRequestURI();
-        System.out.println(url);
-        String rexg="\\.css$|\\.js$|.*image\\.action\\.*|/index.jsp";
-        Pattern pattern = Pattern.compile(rexg);
-        Matcher matcher=pattern.matcher(url);
-        if (!matcher.matches()) {
-            if (session.getAttribute("user") == null)
-                response.sendRedirect("/index.jsp");
-            else
+        String url = request.getRequestURI();
+        url = url.substring(url.lastIndexOf('/') + 1);
+        switch (url) {
+            case "pay.jsp":
+                if (session.getAttribute("user") == null) {
+                    session.setAttribute("request", request.getHeader("Referer"));
+                    response.sendRedirect("/index.html");
+                } else {
+                    chain.doFilter(req, resp);
+                }
+                break;
+            case "result.jsp":
+                String nav = (String) session.getAttribute("request");
+                if (nav != null) {
+                    response.sendRedirect(nav);
+                    session.removeAttribute("request");
+                    nav = null;
+                } else {
+                    chain.doFilter(req, resp);
+                }
+                break;
+            case "upgoods.html":
+                if (session.getAttribute("user") == null) {
+                    session.setAttribute("request",'/'+url);
+                    response.sendRedirect("/index.html");
+                } else {
+                    chain.doFilter(req, resp);
+                }
+                break;
+            default:
                 chain.doFilter(req, resp);
+                break;
         }
-        else
-            chain.doFilter(req, resp);
     }
 
     public void init(FilterConfig config) throws ServletException {

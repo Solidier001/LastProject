@@ -1,0 +1,96 @@
+html,body {
+    width: 100%;
+    height: 100%;
+  }
+body{
+    background-image: url("/img/webpage/gaming-pattern.png");
+    margin: 0;
+    overflow: hidden;
+}
+.title{
+    text-align: center;
+    font-size: 40px;
+    color: white;
+}
+.box{
+    width: 500px;
+    height: 100%;
+    margin: 0 auto;
+     display: flex;
+    justify-content: center;
+    flex-direction: column; 
+}
+.loging-box{
+    height: auto;
+    margin: 0 auto;
+    width: 70%;
+}
+form{
+    height: auto;
+    width: 100%;
+}
+input{
+    float: left;
+    text-align: center;
+    outline: none;
+    display: block;
+    margin-left: 20px;
+    margin-bottom: 5px;
+    background-color: rgba(255, 255, 255, 0.349);
+    border-radius: 15px;
+    height: 30px;
+    width: 310px;
+    border: 1px solid rgba(54, 54, 54, 0.308);
+}
+.borde{
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom left,rgba(8, 8, 8, 0.5),rgba(0, 255, 0, 0.87))
+}
+button{
+    border-radius: 15px;
+    background-color: rgb(36, 255, 255);
+    border: 1px solid rgb(34, 209, 209);
+    width: 310px;
+    height: 35px;
+    color: rgb(90, 0, 117);
+    font-size: 15px;
+    font-weight: 700;
+    margin-left: 20px;
+    outline: none;
+}
+.fa-sort-desc{
+    overflow: hidden;
+    transition: transform 0.5s; 
+    color: rgba(172, 106, 68, 0.685);
+    margin-top: 12px;
+    float: left;
+    cursor: pointer;
+    height: 7px;
+    line-height: 0px;
+    transform: rotate(0deg);
+}
+.formline{
+    margin: 0 auto;
+    width: 100%;
+    height: 40px;
+}
+.hintline{
+    transition: height 1s; 
+    margin: 0 auto;
+    width: 100%;
+    height: 0px;
+    text-align: center;
+    overflow: hidden;
+}
+.fa-eye-slash,.fa-eye{
+    color: rgba(172, 106, 68, 0.685);
+    cursor: pointer;
+}
+i:hover{
+    color: rgba(255, 255, 255, 0.349);
+}
+button:active{
+    background-color: rgba(255, 255, 255, 0.349);
+    outline: none;
+}

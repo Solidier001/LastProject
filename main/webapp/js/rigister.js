@@ -1,30 +1,25 @@
-$().ready(function(){
-    $("#form").validate({
-        errorPlacement: function(error, element) {
-			// Append error within linked label
-			$( element ).parent().siblings("td[class='alert']").append( error );
-		},
-        messages: {
-            name: "用户名不能为空",
-            password:"密码不能为空",
-            comfirmpassword:"密码不相同"
-        }
-    }
-    )
-});
-// $.validator.setDefaults({
-//     submitHandler: function() {
-//       alert("提交事件!");
-//     }
-// });
-// $().ready(function() {
-//     $("#commentForm").validate();
-// });
+layui.use('form', function () {
+    var form = layui.form;
 
-// function vail1(){
-//     if($("form").find("input").val()==""||$.trim($("form").find("input").val()).length==0){ 
-//         $("#forForm").html("*注册表格不能为空");
-//         event.preventDefault();
-//     }
-// }
-// $("input[type='submit']").click(vail1);
+    form.verify({
+        name: [
+            /\p{Unified_Ideograph}/u, '请输入正确名称'
+        ],
+        confirmPass:function(value){
+            if($('input[name=password]').val() !== value)
+                return '两次密码输入不一致！';
+        }
+
+    })
+    //监听提交
+    form.on('submit(formDemo)', function (data) {
+    });
+    $(".layui-icon-password").click(function () {
+        if ($(this).prev().attr("type")=="password"){
+            $(this).prev().attr("type","text");
+        }
+        else if ($(this).prev().attr("type")=="text"){
+            $(this).prev().attr("type","password");
+        }
+    })
+});

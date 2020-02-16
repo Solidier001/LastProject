@@ -1,0 +1,112 @@
+.img{
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+/* .layui-row{
+    background-color: aqua;
+} */
+.show{
+    height: 400px;
+}
+.gooddetile{
+    height: 70%;
+    width: 100%;
+}
+.good-name{
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    font-family: "黑体";
+    font-weight: 900;
+    line-height: 31px;
+    margin-bottom: 20px;
+}
+.good-price{
+    margin-bottom: 20px;
+    height: 40px;
+    float: none;
+}
+.good-price>.lable{
+    width: 4em;
+    height: 100%;
+    line-height: 200%;
+    font-size: 15px;
+    float: left;
+}
+.gooddetile>.lable{
+    margin-bottom: 20px;
+    width: 5em; 
+    font-size: 15px;
+    float: none; 
+}
+.good-price .price{
+    font-weight:700;
+    height: 100%;
+    line-height: 100%;
+    font-size: 34px;
+    color: #FF0000;
+    float: left;
+}
+.good-price b{
+    float: left;
+    line-height: 150%;
+    font-size: 24px;
+    color:	rgb(141, 141, 141);
+}
+#buy{
+    margin-top: 10%;
+    font-weight: 500;
+    font-family: "幼圆";
+    font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+    width: 200px;
+    height: 40px;
+    border-radius: 3px;
+    border-width: 1px;
+    border-color: #FF4500;
+    background-color: #FF4500;
+}
+#buy:hover{
+    background-color: #FF8C00;
+}
+.buy{
+    height: 30%;
+    width: 100%;
+}
+#talk{
+    margin-left: 30px;
+    margin-top: 10%;
+    font-weight: 500;
+    font-family: "幼圆";
+    font-size: 18px;
+    color: #000;
+    cursor: pointer;
+    width: 200px;
+    height: 40px;
+    border-radius: 3px;
+    border-width: 1px;
+    border-color: #E6E6FA;
+    background-color: #E6E6FA;
+}
+#talk:hover{
+    background-color: #20B2AA;
+    color: white;
+}
+.pictures{
+    width: 80%;
+
+    margin: 0 auto;
+    margin-top: 100px;
+}
+.pictures>.img{
+    margin: 0 auto;
+    width: 500px;
+    height: 500px;
+}
+.saller{
+    background-color: #C0C0C0;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 100px;
+}

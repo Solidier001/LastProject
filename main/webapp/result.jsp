@@ -1,4 +1,7 @@
-<%@ page import="daomain.User" %><%--
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ page import="daomain.User" %>
+<%@ page import="daomain.Goods" %>
+<%@ page import="java.util.Set" %><%--
   Created by IntelliJ IDEA.
   User: user
   Date: 2019/12/25
@@ -11,6 +14,8 @@
     <title>Title</title>
 </head>
 <body>
-<div style="font-weight: bold; font-size: 20px">SUCCESS</div>
+<div style="font-weight: bold; font-size: 20px">
+
+</div>
 </body>
 </html>
