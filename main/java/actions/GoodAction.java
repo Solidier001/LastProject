@@ -1,6 +1,8 @@
 package actions;
 
 import ActionExtension.MoreResult;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import daomain.Goods;
@@ -13,21 +15,27 @@ import service.GoodsService;
 import util.OrmService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class GoodAction extends ActionSupport implements ModelDriven<Goods>, MoreResult {
+    private InputStream inputStream;
     private File[] image;
     private String[] imageFileName;
     private String[] imageContentType;
     private Goods good = new Goods();
-    HttpServletRequest request = ServletActionContext.getRequest();
-    HttpSession session = request.getSession();
-    WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-    OrmService service = (OrmService) wac.getBean("OrmService");
-    GoodsService goodsService = (GoodsService) wac.getBean("GoodsService");
+    private HttpServletRequest request = ServletActionContext.getRequest();
+    private HttpSession session = request.getSession();
+    private WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
+    private OrmService service = (OrmService) wac.getBean("OrmService");
+    private GoodsService goodsService = (GoodsService) wac.getBean("GoodsService");
+    private Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
+
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
     public File[] getImage() {
         return image;
     }
@@ -56,8 +64,6 @@ public class GoodAction extends ActionSupport implements ModelDriven<Goods>, Mor
     public Goods getModel() {
         return good;
     }
-
-
 
     public String upGood() {
         try {
@@ -101,9 +107,10 @@ public class GoodAction extends ActionSupport implements ModelDriven<Goods>, Mor
         request.setAttribute("pictures",imglist);
         return SUCCESS;
     }
-    public String secrch(){
-        ArrayList<Goods> list=goodsService.findGoodsByname(good.getName());
-        request.setAttribute("allgoods",list);
+    public String secrch() throws UnsupportedEncodingException {
+        String index=request.getParameter("firstpage");
+        String result=gson.toJson(goodsService.findGoodsByname(good.getName(),Integer.valueOf(index)));
+        inputStream=new ByteArrayInputStream(result.getBytes("utf-8"));
         return SUCCESS;
     }
     public String makeorder(){
@@ -111,6 +118,17 @@ public class GoodAction extends ActionSupport implements ModelDriven<Goods>, Mor
         User user= good.getUser();
         request.setAttribute("user",user);
         request.setAttribute("good",good);
+        return SUCCESS;
+    }
+    public String delsteagood() throws UnsupportedEncodingException {
+        String state;
+        try {
+            service.delate(good);
+            state="删除成功";
+        }catch (Exception e){
+            state="删除失败";
+        }
+        inputStream=new ByteArrayInputStream(state.getBytes("utf-8"));
         return SUCCESS;
     }
 }

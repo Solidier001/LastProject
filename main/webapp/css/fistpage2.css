@@ -1,15 +1,16 @@
 html,body{
+    background-image: url("/img/page/gaming-pattern.png");
     margin: 0;
     width: 100%;
     height: auto;
-    background-color: rgb(247, 247, 247);
 }
 .nav{
     width: 100%;
     height: 65px;
-    background-color: #fff;
+    background-color: transparent;
     border-bottom: 1px solid rgb(236, 236, 236);
     box-shadow: 0px 0px 19px rgb(209, 209, 209);
+    background-color: rgba(255,255,255,0.5);
 }
 .nav>*{
     height: 100%;
@@ -35,19 +36,24 @@ html,body{
 .nav>.login{
     float: right;
     margin-right: 90px;
-    width: 95px;
+    width: auto;
 }
 .fa-user-circle{
     margin-top: 10px;
     color: gray;
     height: 55px;
 }
+.nav>.login>i{
+    display: block;
+    float: left;
+}
 .nav>.login>div{
-    margin-top: 22px;
     height: 43px;
-    margin-right: 14px;
-    float: right;
-    display: table;
+    margin: 0 14px;
+    margin-top: 22px;
+    float: left;
+    display: block;
+    overflow: hidden;
 }
 .nav>.login:hover{
     color: rgb(40, 255, 147);
@@ -74,14 +80,17 @@ html,body{
 .goods{
     overflow: hidden;
     width: 100%;
-    height: 1300px;
+    height: auto;
+    border-radius: 5px;
 }
 .goods>.good{
     display: inline-block;
     cursor: pointer;
     width: 200px;
-    margin: 3px;
+    margin: 10px;
     height: 317px;
+    background-color: rgba(255,255,255,0.5);
+    border-radius: 5px;
 }
 .goods>.good>.good-box:hover{
     border-color: red;
@@ -104,6 +113,7 @@ html,body{
     height: 2.7em;
 }
 .good .detil{
+    color: #9b9b9b;
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -119,8 +129,98 @@ html,body{
 #pages{
     width: 520px;
     height: 45px;
-    margin: 0 auto;
+    margin: 3px auto;
 }
 #carousel>div>div{
     background-size: contain;
+}
+body>div{
+    background: linear-gradient(to right bottom,rgba(255, 10, 0, 0.46),rgba(0, 255, 0, 0.46),rgba(0, 0, 255, 0.46));
+}
+.nav+div{
+    overflow: hidden;
+    background-color: white;
+    width: 100px;
+    height: 0px;
+    position: absolute;
+    z-index: 2;
+    transition:2s;
+    -webkit-transition: 2s;
+    -moz-transition: 2s;
+    -ms-transition: 2s;
+    -o-transition: 2s;
+    transition-delay: 0.5s;
+}
+.nav+div:hover{
+    height: 100px !important;
+}
+.nav+div>div{
+    padding: 3px 0;
+    width: 100%;
+    height: auto;
+    font-size: 16px;
+    text-align: center;
+    border-bottom: 1px solid silver;
+}
+.nav+div>div:hover{
+    color: rgb(40, 255, 147);
+}
+.serchbox{
+    overflow: hidden;
+    width: 35px;
+    height: 35px;
+    border: 1px solid rgb(180, 180, 180);
+    background-color:rgba(192, 192, 192, 0.377);
+    margin: 0 auto;
+    margin-top: 10px;
+    border-radius: 40px;
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    -ms-border-radius: 40px;
+    -o-border-radius: 40px;
+    transition: 0.2s;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -o-transition: 0.2s;
+}
+.serchbox input[type="text"]{
+    height: 35px;
+    width: 235px;
+    padding:0 20px;
+    display: none;
+    border-width: 0;
+    border-radius: 40px;
+    background-color: rgba(177, 177, 177, 0.329);
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    -ms-border-radius: 40px;
+    -o-border-radius: 40px;
+}
+.serchbox button{
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    background-color: silver;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+
+.serchbox:hover{
+    width: 314px;
+}
+.serchbox:hover input[type="text"]{
+    display: inline-block;
+}
+.serchbox button:hover{
+    color: rgb(155, 155, 155);
+}
+button:active{
+    color: rgb(58, 58, 58) !important;
 }

@@ -1,5 +1,7 @@
 package actions;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import daomain.Goods;
@@ -14,6 +16,9 @@ import service.UserService;
 import util.OrmService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 public class AccountAction extends ActionSupport implements ModelDriven<User> {
@@ -23,7 +28,12 @@ public class AccountAction extends ActionSupport implements ModelDriven<User> {
     private OrmService service = (OrmService) wac.getBean("OrmService");
     private UserService userService=(UserService) wac.getBean("UserService");
     private GoodsService goodsService=(GoodsService)wac.getBean("GoodsService");
+    private InputStream inputStream;
+    Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
     private User user = new User();
+    public InputStream getInputStream() {
+        return inputStream;
+    }
     public String login() {
         System.out.println((String) session.getAttribute("request"));
        User sample = (User) service.read(User.class.getName(), user.getId());
@@ -55,6 +65,16 @@ public class AccountAction extends ActionSupport implements ModelDriven<User> {
         order.setGood(goods);
         order.setDate(new Date());
         service.save(order);
+        return SUCCESS;
+    }
+    public String test() throws UnsupportedEncodingException {
+        String status;
+        if (session.getAttribute("user") == null)status = "offline";
+        else{
+            User user= (User) session.getAttribute("user");
+            status="{\"username\":\""+user.getNickname()+"\",\"uid\":\""+user.getId()+"\"}";
+        }
+        inputStream=new ByteArrayInputStream(status.getBytes("utf-8"));
         return SUCCESS;
     }
     @Override
