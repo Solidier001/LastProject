@@ -21,6 +21,11 @@ html,body{
 }
 .nav>.logo img{
     margin: 0 auto;
+    margin-left: 64px;
+    width: 50px;
+    height: 50px;
+    margin-top: 7px;
+    border-radius: 0%;
 }
 .nav>.links{
     text-align: center;
@@ -30,6 +35,10 @@ html,body{
     width: 100px;
 }
 .nav>.links:hover{
+    height: 62px;
+    border-bottom: 3px solid rgb(123, 207, 255);
+}
+.now{
     height: 62px;
     border-bottom: 3px solid rgb(123, 207, 255);
 }
@@ -47,7 +56,7 @@ html,body{
     display: block;
     float: left;
 }
-.nav>.login>div{
+.nav>.login>.lable{
     height: 43px;
     margin: 0 14px;
     margin-top: 22px;
@@ -145,6 +154,7 @@ body>div{
     position: absolute;
     z-index: 2;
     transition:2s;
+    cursor: pointer;
     -webkit-transition: 2s;
     -moz-transition: 2s;
     -ms-transition: 2s;
@@ -223,4 +233,13 @@ body>div{
 }
 button:active{
     color: rgb(58, 58, 58) !important;
+}
+.nav>.login>.img{
+    width: 42px;
+    height: 42px;
+    display: none;
+    background-size: cover;
+    float: left;
+    margin-top: 12px;
+    border-radius: 50%;
 }

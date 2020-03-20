@@ -3,13 +3,18 @@ $.post("/project/account/test",
     function (data, status, xhr) {
         if (data != "offline") {
             var user = JSON.parse(data);
-            $(".login>div").text(user.username);
+            $(".login>.lable").text(user.username);
+            $(".login>.lable").attr("id",user.uid);
+            $(".login>i").remove();
+            $(".nav>.login>.img").css("background-image","url('/img/portait/"+user.img+"')")
+            $(".nav>.login>.img").css("display","block")
             $(".nav>.login").mouseover(function () {
                 $(".nav+div").css("height", "100px");
             });
             $(".nav>.login").mouseout(function () {
                 $(".nav+div").css("height", "0px");
             });
+           $(".login").unbind("click");
         }
     }
 )
@@ -19,24 +24,6 @@ $.post("/project/page/listNumber",
         num = parseInt(data);
     }
 )
-$(".nav>.login").click(function (e) {
-    location = "/index.html";
-});
-$(".nav>.links").click(function (e) {
-    $(".nav>.links").removeClass("linkafterclick");
-    $(this).addClass("linkafterclick");
-    location = $(this).attr("href");
-});
-layui.use('carousel', function () {
-    var carousel = layui.carousel;
-    carousel.render({
-        elem: '#carousel',
-        width: '1000px',
-        height: '400px',
-        arrow: 'always',
-        arrow: 'none'
-    });
-});
 layui.use('laypage', function () {
     var laypage = layui.laypage;
     laypage.render({
@@ -80,16 +67,35 @@ layui.use('laypage', function () {
                         $(a_good).append(goodbox);
                         $(a_good).attr("id", good.id);
                         $(a_good).click(function () {
-                            location = "/project/good/readGood.action?id=" + $(a_good).attr('id');
+                            location = "/project/good/readGood.action?id=" + $(this).attr('id');
                         });
                         $(".goods").append(a_good);
+
                     }
                 }
             );
         }
     });
 });
-var offset = $(".nav>.login>div").offset();
+$(".nav>.login").click(function (e) {
+    location = "/index.html";
+});
+$(".nav>.links").click(function (e) {
+    $(".nav>.links").removeClass("linkafterclick");
+    $(this).addClass("linkafterclick");
+    location = $(this).attr("href");
+});
+layui.use('carousel', function () {
+    var carousel = layui.carousel;
+    carousel.render({
+        elem: '#carousel',
+        width: '1000px',
+        height: '400px',
+        arrow: 'always',
+        arrow: 'none'
+    });
+});
+var offset = $(".nav>.login>.lable").offset();
 var left = offset.left - 45
 $(".nav+div").css("left", left + "px");
 $(".nav+div .message").click(function () {
@@ -147,9 +153,10 @@ $(".serchbox button").click(function () {
                                         $(a_good).append(goodbox);
                                         $(a_good).attr("id", good.id);
                                         $(a_good).click(function () {
-                                            location = "/project/good/readGood.action?id=" + $(a_good).attr('id');
+                                            location = "/project/good/readGood.action?id=" + $(this).attr('id');
                                         });
                                         $(".goods").append(a_good);
+
                                     }
                                 }
                             );
@@ -159,6 +166,12 @@ $(".serchbox button").click(function () {
             })
     }
 });
+$(".cente").click(function () {
+    location="/backstage.html?uid="+$(".login>div").attr("id");
+});
+$(".exit").click(function () {
+    location='/project/account/off_line'
+})
 /*
 $(selector).click(function (e) {
     location = "#";

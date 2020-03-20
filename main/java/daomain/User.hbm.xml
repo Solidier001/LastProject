@@ -3,20 +3,28 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="daomain">
-    <class name="daomain.User" table="User">
+    <class name="daomain.User" table="User" dynamic-update="true">
         <id name="id" type="java.lang.String" column="c_id">
             <generator class="util.UserKeyGenreater"/>
         </id>
+        <property name="imglocation" type="java.lang.String" column="imglocation"/>
         <property name="password" type="java.lang.String" column="c_password"/>
         <property name="name" type="java.lang.String" column="c_name"/>
         <property name="sex" type="java.lang.String" column="c_sex"/>
         <property name="nickname" type="java.lang.String" column="c_nickname"/>
         <property name="locations" type="java.lang.String" column="c_locations"/>
-        <set name="Goods" cascade="all" lazy="false">
+        <property name="fscstr" type="java.lang.String" column="FSCstr"/>
+        <property name="reviewuser" type="java.lang.String" column="reviewuser"/>
+        <property name="stuid" type="java.lang.String" column="stuid"/>
+        <property name="email" type="java.lang.String" column="email"/>
+        <property name="QQ" type="java.lang.String" column="QQ"/>
+        <property name="phone" type="java.lang.String" column="phone"/>
+        <property name="alipayid" type="java.lang.String" column="alipayid"/>
+        <set inverse="true" name="Goods" cascade="all" lazy="false">
             <key column="c_id"/>
             <one-to-many class="Goods"/>
         </set>
-        <set name="Orders" cascade="all" lazy="false">
+        <set inverse="true" name="Orders" cascade="all" lazy="false">
             <key column="o_id"/>
             <one-to-many class="Orders"/>
         </set>

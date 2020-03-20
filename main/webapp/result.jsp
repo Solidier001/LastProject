@@ -1,7 +1,9 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<%@ page import="daomain.User" %>
-<%@ page import="daomain.Goods" %>
-<%@ page import="java.util.Set" %><%--
+<%@ page import="com.alipay.api.AlipayClient" %>
+<%@ page import="org.springframework.web.context.WebApplicationContext" %>
+<%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
+<%@ page import="com.alipay.api.request.AlipayTradePagePayRequest" %>
+<%--
   Created by IntelliJ IDEA.
   User: user
   Date: 2019/12/25
@@ -14,8 +16,14 @@
     <title>Title</title>
 </head>
 <body>
-<div style="font-weight: bold; font-size: 20px">
-
+<%
+    request.setCharacterEncoding("utf-8");
+    WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(application);
+    AlipayClient alipayClient = (AlipayClient) wac.getBean("client");
+    AlipayTradePagePayRequest alipayrequest= (AlipayTradePagePayRequest) request.getAttribute("alipayrequest");
+    String result=alipayClient.pageExecute(alipayrequest).getBody();
+    out.println(result);
+%>
 </div>
 </body>
 </html>

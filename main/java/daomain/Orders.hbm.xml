@@ -5,13 +5,16 @@
 <hibernate-mapping package="daomain">
     <class name="daomain.Orders" table="orders">
         <id name="id" type="java.lang.String" column="o_id">
-            <generator class="util.OrderKeyGenreater"/>
+            <generator class="assigned"/>
         </id>
         <property name="paymethod" type="java.lang.String" column="o_paymethod"/>
+        <property name="statu" type="java.lang.String" column="o_statu"/>
         <property name="price" type="int" column="o_price"/>
         <property name="date" type="java.util.Date" column="o_date"/>
         <property name="nunber" type="int" column="g_number"/>
+        <property name="review" type="java.lang.String" column="review"/>
         <many-to-one name="good" class="Goods" lazy="false" column="g_id" cascade="all"/>
-        <many-to-one name="user" class="User" lazy="false" column="c_id" cascade="all"/>
+        <many-to-one name="owner" class="User" lazy="false" column="own_id" cascade="all"/>
+        <many-to-one name="buyr" class="User" lazy="false" column="buy_id" cascade="all"/>
     </class>
 </hibernate-mapping>

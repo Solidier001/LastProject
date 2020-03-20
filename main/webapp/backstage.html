@@ -10,13 +10,14 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="/layui/layui.js"></script>
-    <title>Document</title>
+    <link rel="Shortcut Icon" href="/img/page/logo.ico" type="image/x-icon" />
+    <title>个人中心-校园二手</title>
 </head>
 
 <body>
     <div class="nav">
-        <div>我是卖家</div>
-        <div>我是买家</div>
+        <div class="navafterclick" cid="#owner">我是卖家</div>
+        <div cid="#buyer">我是买家</div>
     </div>
     <div class="content">
         <script>
@@ -25,11 +26,14 @@
             var contentheigh = bodyheigh - navheigh;
             $(".content").height(contentheigh);
         </script>
-        <div class="menulist">
+        <div class="menulist listafterclick" id="owner">
             <div cid="#menulistgoods">商品管理</div>
-            <div>订单管理</div>
+            <div cid="#menulistorders">订单管理</div>
         </div>
-        <div class="adminpanel">
+        <div class="menulist listbeforeclick" id="buyer">
+            <div cid="#myorders">购买订单管理</div>
+        </div>
+        <div class="adminpanel"> 
             <div id="menulistgoods">
                 <table id="goodstable" lay-filter="test"></table>
                 <div class="plus">
@@ -37,6 +41,12 @@
                         <i class="fa fa-plus"></i>
                     </button>
                 </div>
+            </div>
+            <div id="menulistorders">
+                <table id="orderstable" lay-filter="order"></table>
+            </div>
+            <div id="myorders">
+                <table id="Orders" lay-filter="myorder"></table>
             </div>
         </div>
         <script>
@@ -47,12 +57,24 @@
             $(".adminpanel").height(contentheigh);
         </script>
     </div>
-    <script src="/js/backstage.js"></script>
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+        <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="detail">查看评论</a>
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">下架</a>
     </script>
+    <script type="text/html" id="tools">
+        <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="detail">查看评论</a>
+    </script>
+    <script type="text/html" id="mytools">
+        <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="myreview">我的评论</a>
+        <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="writereview">评论</a>
+        {{#  if(d.statu == "未完成"){ }}
+        <a class="layui-btn layui-btn-xs" id="check" lay-event="check">确认完成</a>
+        {{#  }  else if(d.statu == "已完成"){ }}
+        <a class="layui-btn layui-btn-xs layui-btn-disabled" lay-event="uncheck">已完成</a>
+        {{#  } }}
+    </script>
+    <script src="/js/backstage.js"></script>
 </body>
 
 </html>

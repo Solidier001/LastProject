@@ -1,9 +1,15 @@
 package actions;
 
+import ActionExtension.MoreResult;
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import config.AlipayConfig;
 import daomain.Goods;
 import daomain.Orders;
 import daomain.User;
@@ -13,70 +19,171 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import service.GoodsService;
 import service.MessageService;
 import service.UserService;
+import util.OrderKeyGenreater;
 import util.OrmService;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
 
-public class AccountAction extends ActionSupport implements ModelDriven<User> {
+public class AccountAction extends ActionSupport implements ModelDriven<User>, MoreResult {
+    private File img;
+
+    private String imgFileName;
+
+    private String imgContentType;
+
     private HttpServletRequest request = ServletActionContext.getRequest();
-    private HttpSession session=request.getSession();
+
+    private HttpSession session = request.getSession();
+
     private WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
+
     private OrmService service = (OrmService) wac.getBean("OrmService");
-    private UserService userService=(UserService) wac.getBean("UserService");
-    private GoodsService goodsService=(GoodsService)wac.getBean("GoodsService");
+
+    private UserService userService = (UserService) wac.getBean("UserService");
+
+    private GoodsService goodsService = (GoodsService) wac.getBean("GoodsService");
+
     private InputStream inputStream;
-    Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
+
+    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
+
     private User user = new User();
+
     public InputStream getInputStream() {
         return inputStream;
     }
-    public String login() {
-        System.out.println((String) session.getAttribute("request"));
-       User sample = (User) service.read(User.class.getName(), user.getId());
-        if (sample.getPassword().trim().equals(user.getPassword().trim())){
-            session.setAttribute("user",sample);
-            return SUCCESS;
-        }
-        else
-            return "false";
+
+    public String getImgFileName() {
+        return imgFileName;
     }
 
-    public String rigister() {
-        user.setLocations(userService.initLocations());
-        service.save(user);
+    public void setImgFileName(String imgFileName) {
+        this.imgFileName = imgFileName;
+    }
+
+    public String getImgContentType() {
+        return imgContentType;
+    }
+
+    public void setImgContentType(String imgContentType) {
+        this.imgContentType = imgContentType;
+    }
+
+    public File getImg() {
+        return img;
+    }
+
+    public void setImg(File img) {
+        this.img = img;
+    }
+
+    public String login() {
+//        System.out.println((String) session.getAttribute("request"));
+        try {
+            User sample = userService.login(user.getId(), request.getParameter("method"));
+            if (sample.getPassword().trim().equals(user.getPassword().trim())) {
+                session.setAttribute("user", sample);
+                return SUCCESS;
+            } else
+                return FALSE;
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+            return FALSE;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return FALSE;
+        }
+    }
+
+    public String rigister() throws IOException {
+        userService.rigister(user, img, ServletActionContext.getServletContext().getRealPath("/img/portait"));
         return SUCCESS;
     }
-    public String off_line(){
+
+    public String off_line() {
         session.removeAttribute("user");
         session.invalidate();
         return SUCCESS;
     }
-    public String buy(){
-        Orders order=new Orders();
-        Goods goods=new Goods();
+
+    public String buy() throws UnsupportedEncodingException, AlipayApiException {
+        Orders order = new Orders();
+        Goods goods = new Goods();
         goods.setId(request.getParameter("goodid"));
         order.setPaymethod(request.getParameter("paymethod"));
         order.setNunber(1);
-        order.setUser(user);
+        order.setStatu("未完成");
+        order.setPrice(Integer.valueOf(request.getParameter("price")));
+        user = (User) service.read(User.class.getName(), user.getId());
+        goods = (Goods) service.read(Goods.class.getName(), goods.getId());
+        order.setBuyr(user);
         order.setGood(goods);
         order.setDate(new Date());
-        service.save(order);
-        return SUCCESS;
+        order.setId(OrderKeyGenreater.getkey());
+        if (order.getPaymethod().equals("当面支付")) {
+            goods.setTimes(goods.getTimes() - 1);
+            service.save(order);
+            service.update(goods);
+            return "In person";
+        } else {
+            AlipayTradePagePayRequest alipayRequest = (AlipayTradePagePayRequest) wac.getBean("alipayTradePagePayRequest");
+            String out_trade_no = order.getId();
+            String total_amount = String.valueOf(order.getPrice());
+            String subject = goods.getName();
+            String body = goods.getDetail();
+            alipayRequest.setBizContent("{\"out_trade_no\":\"" + out_trade_no + "\","
+                    + "\"total_amount\":\"" + total_amount + "\","
+                    + "\"subject\":\"" + subject + "\","
+                    + "\"body\":\"" + body + "\","
+                    + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
+            request.setAttribute("alipayrequest",alipayRequest);
+            goods.setTimes(goods.getTimes() - 1);
+            service.save(order);
+            service.update(goods);
+            return SUCCESS;
+        }
     }
+
     public String test() throws UnsupportedEncodingException {
         String status;
-        if (session.getAttribute("user") == null)status = "offline";
-        else{
-            User user= (User) session.getAttribute("user");
-            status="{\"username\":\""+user.getNickname()+"\",\"uid\":\""+user.getId()+"\"}";
+        if (session.getAttribute("user") == null) status = "offline";
+        else {
+            User user = (User) session.getAttribute("user");
+            status = "{\"username\":\"" + user.getNickname() + "\",\"uid\":\"" + user.getId() + "\",\"img\":\"" + user.getImglocation() + "\"}";
         }
-        inputStream=new ByteArrayInputStream(status.getBytes("utf-8"));
+        inputStream = new ByteArrayInputStream(status.getBytes("utf-8"));
         return SUCCESS;
     }
+
+    public String review() throws IOException {
+        String realpath = ServletActionContext.getServletContext().getRealPath("/review/users");
+        userService.review(realpath, request.getParameter("review"), ((User) session.getAttribute("user")).getId());
+        return SUCCESS;
+    }
+
+    public String appendreview() throws IOException {
+        String realpath = ServletActionContext.getServletContext().getRealPath("/review/users");
+        userService.appendreview(realpath, request.getParameter("review"), ((User) session.getAttribute("user")).getId());
+        return SUCCESS;
+    }
+
+    public String reviewlist() throws UnsupportedEncodingException {
+        String realpath = ServletActionContext.getServletContext().getRealPath("/review/users");
+        ArrayList<String> list = userService.reviewlist(((User) session.getAttribute("user")).getId(), realpath);
+        inputStream = new ByteArrayInputStream(gson.toJson(list).getBytes("utf-8"));
+        return SUCCESS;
+    }
+
+    public String usermessage() throws UnsupportedEncodingException {
+        user = userService.usermessage(user.getId());
+        inputStream = new ByteArrayInputStream(gson.toJson(user).getBytes("utf-8"));
+        return SUCCESS;
+    }
+
     @Override
     public User getModel() {
         return user;

@@ -18,7 +18,8 @@ hr{
 .stepshow{
     width: 60%;
     height: 100%;
-    margin-left: 40%;
+    float: right;
+    /*margin-left: 40%;*/
 }
 .bar{
     background-color: rgb(245, 245, 245);
@@ -282,4 +283,9 @@ li>.location{
 }
 .fa-times:active{
     color: rgb(210, 210, 210);
+}
+img{
+    width: 100px;
+    height: 100px;
+    float: left;
 }

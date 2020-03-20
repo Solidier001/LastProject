@@ -161,11 +161,12 @@
 <%@taglib prefix="s" uri="/struts-tags"%>
 <html>
 <head>
-    <title>Title</title>
+    <title>订单-校园二手</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
     <link rel="stylesheet" href="/css/pay.css">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <link rel="Shortcut Icon" href="/img/page/logo.ico" type="image/x-icon" />
 </head>
 <body>
 <div class="bar"></div>
@@ -198,7 +199,7 @@
 
             <table>
                 <tr class="th">
-                    <th>商品名称</th>
+                    <th>商品</th>
                     <th>单价</th>
                     <th>买家</th>
                     <th>卖家</th>
@@ -209,11 +210,13 @@
                 </tr>
                 <tr class="td">
                     <td>
+                        <img src="<s:property value="#request.good.pictures"/>main.jpg">
                         <s:property value="#request.good.name"/>
                     </td>
                     <td>
                         <s:property value="#request.good.price"/>
-                        <input type="hidden" name="goodid" value="<s:property value="#request.good.id" />">
+                        <input type="hidden"  name="goodid" value="<s:property value="#request.good.id" />">
+                        <input type="hidden"  name="price" value="<s:property value="#request.good.price"/>">
                     </td>
                     <td>
                         <s:property value="#session.user.name"/>

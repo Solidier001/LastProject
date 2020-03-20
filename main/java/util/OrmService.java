@@ -14,4 +14,7 @@ public class OrmService extends HibernateDaoSupport {
     public void delate(Object object){
         this.getHibernateTemplate().delete(object);
     }
+    public void update(Object object){
+        this.getHibernateTemplate().update(object);
+    }
 }

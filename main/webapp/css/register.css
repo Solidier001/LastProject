@@ -9,6 +9,7 @@ body{
     width: 70%;
     margin: 0 auto;
     margin-top: 5%;
+    margin-bottom: 5%;
 }
 .title{
     width: 6em;
@@ -30,3 +31,38 @@ body{
     color:#808080;
     cursor: pointer;  
 } 
+input[type='file']{
+    display: none;
+}
+label[for="img"]{
+    background-size: cover;
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+    padding: 0;
+    text-align: center;
+    line-height: 80px;
+    background-color: #ececec;
+}
+button[type="reset"]+.layui-btn{
+    position: relative;
+}
+.buttonback{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+@keyframes counttime{
+    0%{
+        width: 0%;
+    }
+    100%{
+        width: 100%;
+    }
+}
+.buttonback>*{
+    display: block;
+}

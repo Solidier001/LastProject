@@ -23,3 +23,21 @@ layui.use('form', function () {
         }
     })
 });
+function getObjectURL(file) {
+    var url = null;
+    var windowURL = window.URL || window.webkitURL;
+    url = webkitURL.createObjectURL(file);
+    return url;
+}
+$("#img").change(function () {
+    $("label[for='img']").empty();
+    $("label[for='img']").css("background-image", "url("+getObjectURL(this.files[0])+")");
+});
+$(".buttonback").click(function (e) { 
+    $(this).animate({
+        width: '0%',
+    },250,function (e) {$(".buttonback>*").css("cursor", "not-allowed")});
+    $(this).animate({
+        width: '100%',
+    },60000,function (e) {$(".buttonback>*").css("cursor", "pointer")});
+});

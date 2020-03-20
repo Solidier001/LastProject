@@ -25,4 +25,16 @@ public class OrderKeyGenreater implements IdentifierGenerator {
         s.append(timecount.substring(timecount.length()-4));
         return s.toString();
     }
+    public static String getkey(){
+        Date date=new Date();
+        SimpleDateFormat format=new SimpleDateFormat("yyyyMMdd");
+        String timecount=Long.toString(date.getTime());
+        Pattern p=Pattern.compile("\\D");
+        Matcher matcher=p.matcher(new StringBuilder(UUID.randomUUID().toString()));
+        StringBuilder s=new StringBuilder(matcher.replaceAll(""));
+        s.delete(6,s.length()-1);
+        s.append(format.format(date).trim());
+        s.append(timecount.substring(timecount.length()-4));
+        return s.toString();
+    }
 }

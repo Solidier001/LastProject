@@ -19,8 +19,9 @@ public class AccountTestFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpSession session = request.getSession();
         HttpServletResponse response = (HttpServletResponse) resp;
+        request.setCharacterEncoding("utf-8");
         String url = request.getRequestURI();
-        url = url.substring(url.lastIndexOf('/') + 1);
+        url = url.substring(url.lastIndexOf('/') + 1).replaceAll("\\?.*","");
         switch (url) {
             case "pay.jsp":
                 if (session.getAttribute("user") == null) {
@@ -30,9 +31,9 @@ public class AccountTestFilter implements Filter {
                     chain.doFilter(req, resp);
                 }
                 break;
-            case "result.jsp":
+            case "fistpage2.html":
                 String nav = (String) session.getAttribute("request");
-                if (nav != null) {
+                if (nav != null&&session.getAttribute("user") != null) {
                     response.sendRedirect(nav);
                     session.removeAttribute("request");
                     nav = null;
@@ -49,8 +50,7 @@ public class AccountTestFilter implements Filter {
                 }
                 break;
             default:
-                chain.doFilter(req, resp);
-                break;
+                    chain.doFilter(req, resp);
         }
     }
 

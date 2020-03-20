@@ -16,20 +16,44 @@
         </action>
     </package>
     <package name="Account" extends="struts-default" namespace="/project/account">
+        <action name="usermessage" class="actions.AccountAction" method="usermessage">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
         <action name="login" class="actions.AccountAction" method="login">
             <result type="redirect" name="success">/fistpage2.html</result>
             <result type="redirect" name="false">/index.html</result>
         </action>
         <action name="rigister" class="actions.AccountAction" method="rigister">
-            <result type="redirect">/index.jsp</result>
+            <result type="redirect">/index.html</result>
         </action>
         <action name="off_line" class="actions.AccountAction" method="off_line">
-            <result name="success">/index.jsp</result>
+            <result name="success" type="redirect">/fistpage2.html</result>
         </action>
         <action name="buy" class="actions.AccountAction" method="buy">
-           <result>/test.jsp</result>
+           <result name="success">/result.jsp</result>
+           <result name="In person">/fistpage2.html</result>
         </action>
         <action name="test" class="actions.AccountAction" method="test">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+        <action name="review" class="actions.AccountAction" method="review">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+        <action name="appendreview" class="actions.AccountAction" method="appendreview">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result></action>
+        <action name="reviewlist" class="actions.AccountAction" method="reviewlist">
             <result type="stream" name="success">
                 <param name="contentType">text/html</param>
                 <param name="inputName">inputStream</param>
@@ -58,8 +82,35 @@
         <action name="makeorder" class="actions.GoodAction" method="makeorder">
             <result name="success">/pay.jsp</result>
         </action>
+        <action name="uodate" class="actions.GoodAction" method="updategood">
+            <result name="success">/editgoods.jsp</result>
+            <result name="failure">/editfailpage.html</result>
+        </action>
+        <action name="review" class="actions.GoodAction" method="review">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+        <action name="appendreview" class="actions.GoodAction" method="appendreview">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+        <action name="reviewlist" class="actions.GoodAction" method="reviewlist">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result></action>
     </package>
     <package name="Page" extends="struts-default" namespace="/project/page">
+        <action name="newmessage" class="actions.PageAction" method="newmessage">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
         <action name="allGoodsTable" class="actions.PageAction" method="allGoodsforTable">
             <result type="stream" name="success">
                 <param name="contentType">text/html</param>
@@ -83,6 +134,78 @@
                 <param name="contentType">text/html</param>
                 <param name="inputName">inputStream</param>
             </result>
+        </action>
+        <action name="onegood" class="actions.PageAction" method="getOneGood">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+        <action name="messageuserlist" class="actions.PageAction" method="MessageUserlist">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+    </package>
+    <package name="Order" extends="struts-default" namespace="/project/order">
+        <action name="orderlist" class="actions.OrderAction" method="getOrderlist">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+        <action name="chick" class="actions.OrderAction" method="chick">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+        <action name="order" class="actions.OrderAction" method="getorder">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+        <action name="BuyerOrderlist" class="actions.OrderAction" method="getOrderlistforbuyer">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+        <action name="writereview" class="actions.OrderAction" method="writeOrderReview">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+        <action name="readreview" class="actions.OrderAction" method="readOrderReview">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+    </package>
+    <package name="Essay" extends="struts-default" namespace="/project/essay">
+        <action name="show" class="actions.EssayAction" method="ShowEssays">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+        <action name="write" class="actions.EssayAction" method="writeessay">
+            <result name="success"></result>
+            <result name="failure"></result>
+        </action>
+        <action name="self" class="actions.EssayAction" method="SelfEssays">
+            <result type="stream" name="success">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+        <action name="delete" class="actions.EssayAction" method="DeleteEssay">
+            <result name="success"></result>
+            <result name="failure"></result>
         </action>
     </package>
 </struts>

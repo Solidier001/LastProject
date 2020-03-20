@@ -5,36 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
     <link rel="stylesheet" href="/css/index.css">
-    <title>Document</title>
+    <link rel="Shortcut Icon" href="/img/page/logo.ico" type="image/x-icon"/>
+    <title>登录-校园二手</title>
 </head>
 <body>
-    <div class="borde">
-        <div class="box">
-            <div class="loging-box">
-                <div class="title">welcome</div>
-                <form method="post" action="/project/account/login.action">
-                    <div class="formline">
-                        <input type="text" name="id" placeholder="账号">
-                        <i class="fa fa-sort-desc fa-lg"></i>
+<div class="borde">
+    <div class="box">
+        <div class="loging-box">
+            <div class="title">welcome</div>
+            <form method="post" action="/project/account/login.action">
+                <div class="formline">
+                    <input type="text" name="id" placeholder="账号(可打开下拉面板选择登录方式/进行注册)">
+                    <i class="fa fa-sort-desc fa-lg"></i>
+                </div>
+                <div class="hintline">
+                    <div class="loginmethod">
+                        <label for="radio1">账号</label>
+                        <input id="radio1" checked type="radio" value="id" name="method">
+                        <label for="radio2">学号</label>
+                        <input id="radio2" type="radio" value="stuid" name="method">
+                        <label for="radio3">邮箱</label>
+                        <input id="radio3" type="radio" value="email" name="method">
                     </div>
-                    <div class="hintline">
-                        
-                    </div>
-                    <div class="formline">
-                        <input type="password" name="password" placeholder="密码">
-                        <i class="fa fa-sort-desc fa-lg"></i>
-                    </div>
-                    <div class="hintline">
-                        <i class="fa fa-eye-slash fa-2x"></i>
-                    </div>
-                    <button>Login</button>
-                </form>
-            </div>
+                    <a href="/rigister.html">没有账号?立即注册</a>
+                </div>
+                <div class="formline">
+                    <input type="password" name="password" placeholder="密码(可打开下拉面板关闭/打开密码隐蔽)">
+                    <i class="fa fa-sort-desc fa-lg"></i>
+                </div>
+                <div class="hintline">
+                    <i class="fa fa-eye-slash fa-2x"></i>
+                </div>
+                <button>Login</button>
+            </form>
         </div>
     </div>
-    <script src="/js/index.js"></script>
+</div>
+<script src="/js/index.js"></script>
 </body>
 </html>

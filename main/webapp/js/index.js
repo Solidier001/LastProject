@@ -2,8 +2,8 @@ $(".fa-sort-desc").click(
     function () {
         if ($(this).parent().next().css("height") == "0px") {
             $(this).css("transform", "rotate(180deg)");
-            $(this).parent().next().css("height", "40px")
-        } else if ($(this).parent().next().css("height") == "40px") {
+            $(this).parent().next().css("height", "50px")
+        } else if ($(this).parent().next().css("height") == "50px") {
             $(this).css("transform", "rotate(0deg)");
             $(this).parent().next().css("height", "0px")
         }
@@ -20,3 +20,10 @@ $(".fa-eye-slash").click(
         }
     }
 )
+$("input[name='method']").change(function () {
+    switch ($(this).val()) {
+        case "id":$("input[name='id']").attr("placeholder","账号");break;
+        case "stuid":$("input[name='id']").attr("placeholder","学号");break;
+        case "email":$("input[name='id']").attr("placeholder","email");break;
+    }
+})

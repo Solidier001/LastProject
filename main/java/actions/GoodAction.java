@@ -12,6 +12,7 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import service.GoodsService;
+import service.OrderService;
 import util.OrmService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,6 +31,7 @@ public class GoodAction extends ActionSupport implements ModelDriven<Goods>, Mor
     private WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
     private OrmService service = (OrmService) wac.getBean("OrmService");
     private GoodsService goodsService = (GoodsService) wac.getBean("GoodsService");
+    private OrderService orderService = (OrderService) wac.getBean("OrderService");
     private Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
 
     public InputStream getInputStream() {
@@ -91,6 +93,7 @@ public class GoodAction extends ActionSupport implements ModelDriven<Goods>, Mor
         }
         return SUCCESS;
     }
+
     public String readGood(){
         ArrayList<String> imglist=new ArrayList<>();
         Goods sample = (Goods) service.read(Goods.class.getName(), good.getId());
@@ -107,12 +110,14 @@ public class GoodAction extends ActionSupport implements ModelDriven<Goods>, Mor
         request.setAttribute("pictures",imglist);
         return SUCCESS;
     }
+
     public String secrch() throws UnsupportedEncodingException {
         String index=request.getParameter("firstpage");
         String result=gson.toJson(goodsService.findGoodsByname(good.getName(),Integer.valueOf(index)));
         inputStream=new ByteArrayInputStream(result.getBytes("utf-8"));
         return SUCCESS;
     }
+
     public String makeorder(){
         good=(Goods) service.read(Goods.class.getName(),good.getId());
         User user= good.getUser();
@@ -120,15 +125,50 @@ public class GoodAction extends ActionSupport implements ModelDriven<Goods>, Mor
         request.setAttribute("good",good);
         return SUCCESS;
     }
+
     public String delsteagood() throws UnsupportedEncodingException {
         String state;
         try {
+            Goods good= (Goods) service.read(Goods.class.getName(),this.good.getId());
+            FileUtils.deleteDirectory(new File(ServletActionContext.getServletContext().getRealPath(good.getPictures())));
             service.delate(good);
             state="删除成功";
         }catch (Exception e){
             state="删除失败";
         }
         inputStream=new ByteArrayInputStream(state.getBytes("utf-8"));
+        return SUCCESS;
+    }
+
+    public String updategood() {
+        String result=goodsService.udategood(good);
+        request.setAttribute("good",goodsService.OneGoods(good.getId()));
+        return result;
+    }
+
+    public String review() throws IOException {
+        String realpath=ServletActionContext.getServletContext().getRealPath("/");
+        String review=request.getParameter("review");
+        String uid=((User)session.getAttribute("user")).getId();
+        String id=request.getParameter("id");
+        goodsService.review(realpath,review,id,uid);
+        inputStream=new ByteArrayInputStream("成功".getBytes("utf-8"));
+        return SUCCESS;
+    }
+
+    public String appendreview() throws IOException {
+        String realpath=ServletActionContext.getServletContext().getRealPath("/");
+        goodsService.appendreview(realpath,request.getParameter("review"),request.getParameter("id"));
+        inputStream=new ByteArrayInputStream("成功".getBytes("utf-8"));
+        return SUCCESS;
+    }
+
+    public String reviewlist() throws UnsupportedEncodingException {
+        String realpath=ServletActionContext.getServletContext().getRealPath("/");
+        ArrayList<String> list= goodsService.reviewlist(request.getParameter("id"),realpath);
+        if(list==null||list.size()==0)
+            inputStream=new ByteArrayInputStream("null".getBytes("utf-8"));
+        else inputStream=new ByteArrayInputStream(gson.toJson(list).getBytes("utf-8"));
         return SUCCESS;
     }
 }

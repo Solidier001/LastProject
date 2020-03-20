@@ -2,6 +2,7 @@ package WebSoket;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.vdurmont.emoji.EmojiParser;
 import daomain.Message;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -23,7 +24,7 @@ public class WebSocketTest {
     private Map<String, Object> UserProperties;
     private String name;
     private String id;
-    private Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
+    private Gson gson=new GsonBuilder().disableHtmlEscaping().setDateFormat("yyyy-MM-dd HH:mm").create();
     @OnOpen
     public void onopen(Session session, EndpointConfig config) {
         UserProperties = config.getUserProperties();
@@ -34,6 +35,7 @@ public class WebSocketTest {
         id=props.get("id").get(0);
         name=props.get("name").get(0);
         users.put(id, session);
+        System.out.println(name+"进入");
     }
 
     @OnClose
@@ -46,8 +48,10 @@ public class WebSocketTest {
         message.setForm(id);
         message.setName(name);
         message.setDate(new Date());
+        message.setMessage(EmojiParser.parseToHtmlDecimal(message.getMessage()));
         messageService.save(message);
         String messagestr=gson.toJson(message);
+        System.out.println(messagestr);
         if (users.containsKey(message.getTo()))users.get(message.getTo()).getAsyncRemote().sendText(messagestr);
         session.getAsyncRemote().sendText(messagestr);
     }

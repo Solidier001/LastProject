@@ -3,7 +3,7 @@ html,body {
     height: 100%;
   }
 body{
-    background-image: url("/img/webpage/gaming-pattern.png");
+    background-image: url("/img/page/gaming-pattern.png");
     margin: 0;
     overflow: hidden;
 }
@@ -93,4 +93,32 @@ i:hover{
 button:active{
     background-color: rgba(255, 255, 255, 0.349);
     outline: none;
+}
+.hintline a{
+    text-decoration: none;
+    color: rgb(0, 255, 179);
+}
+.hintline a:hover{
+    color: #fff;
+}
+.loginmethod{
+    width: 220px;
+    overflow: hidden;
+    height: 25px;
+    margin: 0 auto;
+}
+.loginmethod>input{
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    float: left;
+    margin: 0;
+    margin-top: 4px;
+    margin-left: 5px;
+}
+.loginmethod>label{
+    cursor: pointer;
+    float: left;
+    display: block;
+    margin-left: 20px;
 }

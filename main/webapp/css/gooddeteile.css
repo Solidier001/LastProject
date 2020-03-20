@@ -1,3 +1,7 @@
+body,html{
+    margin: 0;
+    background-color: #fdfdfd;
+}
 .img{
     background-repeat: no-repeat;
     background-size: contain;
@@ -9,7 +13,7 @@
     height: 400px;
 }
 .gooddetile{
-    height: 70%;
+    height: 80%;
     width: 100%;
 }
 .good-name{
@@ -35,9 +39,11 @@
 }
 .gooddetile>.lable{
     margin-bottom: 20px;
-    width: 5em; 
+    width: 100%;
     font-size: 15px;
-    float: none; 
+    float: none;
+    height: auto;
+    overflow: hidden;
 }
 .good-price .price{
     font-weight:700;
@@ -109,4 +115,122 @@
     width: 80%;
     margin: 0 auto;
     margin-top: 100px;
+}
+.reviewarea{
+    margin-top: 20px;
+    width: 100%;
+    height: 400px;
+}
+.reviewbox{
+    background-color: white;
+    width: 1100px;
+    height: 100%;
+    overflow-y: auto;
+    margin: 0 auto;
+    margin-bottom: 70px;
+}
+.reviewitem{
+    width: 100%;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+.lable{
+    width: 100%;
+    height: 50px;
+}
+.lable .img{
+    background-size: cover;
+    margin-top: 5px ;
+    margin-left: 5px;
+    float: left;
+    background-color: #fcff81;
+    width: 45px;
+    height: 45px;
+}
+.lable .name{
+    margin-top: 25px;
+    float: left;
+    font-size: 18px;
+    margin-left: 10px;
+}
+.lable .date{
+    float: left;
+    margin-top: 26px;
+    font-size: 14px;
+    color: #cacaca;
+    margin-left: 10px;
+}
+.text{
+    text-indent: 2em;
+    font-size: 16px;
+    color: grey;
+}
+.noreview{
+    width: 100%;
+    height: 100px;
+    font-weight: bolder;
+    text-align: center;
+    line-height: 400px;
+    letter-spacing: 50px;
+    font-size: 50px;
+    color: #c6c6c6;
+}
+.head{
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid #dedede;
+}
+.tittle{
+    float: left;
+    margin-left: 14px;
+    margin-top: 9px;
+}
+.button{
+    color: white;
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 3px;
+    background-color: #6774b8;
+    float: right;
+    margin-right:14px;
+    margin-top: 9px;
+}
+.button:active{
+    background-color: #8f9eec !important;
+}
+.button:hover{
+    background-color: #7685cf;
+}
+.banner>.container{
+    width: 1100px;
+    height: 100%;
+    margin: 0 auto;
+}
+.banner>.container>a{
+    height: 65px;
+    line-height: 63px;
+    width: 85px;
+    display: block;
+    float: left;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+.banner>.container>a:hover{
+    height: 62px;
+    border-width: 0px;
+    border-bottom: 3px solid #e0ffa0;
+    background-color: rgb(255, 159, 137);
+    color: black;
+}
+.banner>.container>a:active{
+    height: 62px;
+    border-width: 0px;
+    border-bottom: 3px solid #c8ff6f;
+    background-color: rgb(255, 214, 209);
+    color: black;
 }
