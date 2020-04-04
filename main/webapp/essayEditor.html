@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/essayEditor.css">
+    <link href="https://cdn.bootcss.com/font-awesome/5.12.1/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <link rel="Shortcut Icon" href="/img/page/logo.ico" type="image/x-icon" />
+    <title>编辑器</title>
+</head>
+
+<body>
+    <div class="toolsbar">
+        <div class="bold">
+            <i class="fas fa-bold fa-2x"></i>
+            <div>加粗</div>
+        </div>
+        <div class="italic">
+            <i class="fas fa-italic fa-2x"></i>
+            <div>斜体</div>
+        </div>
+        <div class="font">
+            <i class="fas fa-font fa-2x"></i>
+            <div>字体</div>
+        </div>
+        <div class="text-width">
+            <i class="fas fa-text-width fa-2x"></i>
+            <div>字体大小</div>
+        </div>
+        <div class="indent">
+            <i class="fas fa-align-right fa-2x"></i>
+            <div>缩进</div>
+        </div>
+        <div class="link">
+            <i class="fas fa-link fa-2x"></i>
+            <div>超链接</div>
+        </div>
+        <div class="heading">
+            <i class="fas fa-heading fa-2x"></i>
+            <div>标题</div>
+        </div>
+        <div class="image">
+            <i class="fas fa-image fa-2x"></i>
+            <div>图片</div>
+        </div>
+        <div class="film">
+            <i class="fas fa-film fa-2x"></i>
+            <div>视屏</div>
+        </div>
+        <div class="ol">
+            <i class="fas fa-list-ol fa-2x"></i>
+            <div>列表1</div>
+        </div>
+        <div class="ul">
+            <i class="fas fa-list-ul fa-2x"></i>
+            <div>列表2</div>
+        </div>
+        <div class="smile">
+            <i class="fas fa-smile fa-2x"></i>
+            <div>表情</div>
+        </div>
+    </div>
+    <div class="Editor">
+        <div class="input" id="reachEdit" contenteditable="true">
+            <div>请在此编辑</div>
+        </div>
+        <div class="show">
+            <div>请在此编辑</div>
+        </div>
+    </div>
+    <div id="font">
+        <div class="font-content">
+            <div class="font-chooser">
+                <div class="show">请选择字体</div>
+                <div class="fonts">
+                    <div>宋体</div>
+                    <div>微软雅黑</div>
+                    <div>仿宋</div>
+                    <div>黑体</div>
+                    <div>方正姚体</div>
+                    <div>华文行楷</div>
+                    <div>楷体</div>
+                    <div>方正舒体</div>
+                    <div>幼圆</div>
+                    <div>华文中宋</div>
+                    <div>隶书</div>
+                    <div>幼圆</div>
+                </div>
+            </div>
+            <div class="comfirm">
+                <button type="button">确认</button>
+            </div>
+        </div>
+    </div>
+    <div id="indent">
+        <div class="indent-content">
+            <div class="indent-chooser">
+                <div class="show">
+                    <div>段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落</div>
+                    <div>段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落</div>
+                    <div>段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落</div>
+                    <div>段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落段落</div>
+                </div>
+                <div class="indent-value">
+                    <div>0</div>
+                    <div>0.5</div>
+                    <div>1</div>
+                    <div>1.5</div>
+                    <div>2</div>
+                    <div>2.5</div>
+                    <div>3</div>
+                    <div>3.5</div>
+                    <div>4</div>
+                    <div>4.5</div>
+                    <div>5</div>
+                    <div>5.5</div>
+                    <div>6</div>
+                    <div>6.5</div>
+                    <div>7</div>
+                    <div>7.5</div>
+                    <div>8</div>
+                    <div>8.5</div>
+                    <div>9</div>
+                    <div>9.5</div>
+                    <div>10</div>
+                    <div>10.5</div>
+                    <div>11</div>
+                </div>
+            </div>
+            <div class="comfirm">
+                <button type="button">确认</button>
+            </div>
+        </div>
+    </div>
+    <div id="link">
+        <div class="link-content">
+            <div class="inputlink">
+                <div>
+                    <label for="url" class="urllable">网址</label><input type="url" id="url">
+                </div>
+            </div>
+            <div class="inputtext">
+                <div>
+                    <label for="contenttext" class="contentlable">内容</label><input type="text" id="contenttext">
+                </div>
+            </div>
+            <div class="comfirm">
+                <button type="button">确认</button>
+            </div>
+        </div>
+    </div>
+    <div id="heading">
+        <div class="heading-content">
+            <div class="input">
+                <div>内容:<input type="text" class="tittle"></div>
+            </div>
+            <div class="style">
+                <div>
+                    <div class="chooser">
+                        <h1>1&nbsp;一级标题</h1>
+                        <h2>1.1&nbsp;二级标题</h2>
+                        <h3>1.1.1&nbsp;三级标题</h3>
+                        <h4>1.1.1.1&nbsp;四级标题</h4>
+                        <h5>1.1.1.1.1&nbsp;五级标题</h5>
+                        <h6>1.1.1.1.1.1&nbsp;六级标题</h6>
+                    </div>
+                    <div class="show">
+                        <h2>1&nbsp;一级标题</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="confirm">
+                <button type="button">插入</button>
+            </div>
+        </div>
+    </div>
+    <div id="image">
+        <div class="image-content">
+            <div class="chooser-content">
+                <div>
+                    <input type="file" class="file">
+                    <button type="button">选择图片</button>
+                    <div class="imginfor"></div>
+                </div>
+            </div>
+            <div class="show-content">
+                <img>
+            </div>
+            <div class="confirm">
+                <button type="button">插入图片</button>
+            </div>
+        </div>
+    </div>
+    <div id="video">
+        <div class="video-content">
+            <div class="chooser-content">
+                <div>
+                    <input type="file" class="file">
+                    <button type="button">选择视屏</button>
+                    <div class="videoinfor"></div>
+                </div>
+            </div>
+            <div class="show-content">
+                <video controls type="video/mp4" width="320" height="240"></video>
+            </div>
+            <div class="confirm">
+                <button type="button">插入视屏</button>
+            </div>
+        </div>
+    </div>
+    <div id="smile">
+        <div class="smile-content">
+            <div>&#128538;</div>
+            <div>&#128535;</div>
+            <div>&#128537;</div>
+            <div>&#128540;</div>
+            <div>&#128541;</div>
+            <div>&#128539;</div>
+            <div>&#128563;</div>
+            <div>&#128513;</div>
+            <div>&#128532;</div>
+            <div>&#128524;</div>
+            <div>&#128530;</div>
+            <div>&#128542;</div>
+            <div>&#128547;</div>
+            <div>&#128546;</div>
+            <div>&#128514;</div>
+            <div>&#128557;</div>
+            <div>&#128554;</div>
+            <div>&#128549;</div>
+            <div>&#128560;</div>
+            <div>&#128517;</div>
+            <div>&#128531;</div>
+            <div>&#128553;</div>
+            <div>&#128555;</div>
+            <div>&#128552;</div>
+            <div>&#128561;</div>
+            <div>&#128544;</div>
+            <div>&#128545;</div>
+            <div>&#128548;</div>
+            <div>&#128534;</div>
+            <div>&#128518;</div>
+            <div>&#128518;</div>
+            <div>&#128523;</div>
+            <div>&#128567;</div>
+            <div>&#128526;</div>
+            <div>&#128564;</div>
+            <div>&#128565;</div>
+            <div>&#128562;</div>
+            <div>&#128543;</div>
+            <div>&#128550;</div>
+            <div>&#128551;</div>
+            <div>&#128520;</div>
+            <div>&#128127;</div>
+            <div>&#128558;</div>
+            <div>&#128528;</div>
+            <div>&#128533;</div>
+            <div>&#128559;</div>
+            <div>&#128566;</div>
+            <div>&#128519;</div>
+            <div>&#128527;</div>
+            <div>&#128529;</div>
+            <div>&#128114;</div>
+            <div>&#128115;</div>
+            <div>&#128110;</div>
+            <div>&#128119;</div>
+            <div>&#128130;</div>
+            <div>&#128118;</div>
+            <div>&#128102;</div>
+            <div>&#128103;</div>
+            <div>&#128104;</div>
+            <div>&#128105;</div>
+            <div>&#128116;</div>
+            <div>&#128117;</div>
+            <div>&#128113;</div>
+            <div>&#128124;</div>
+            <div>&#128120;</div>
+            <div>&#128570;</div>
+            <div>&#128568;</div>
+            <div>&#128571;</div>
+            <div>&#128573;</div>
+            <div>&#128572;</div>
+            <div>&#128576;</div>
+            <div>&#128575;</div>
+            <div>&#128569;</div>
+            <div>&#128574;</div>
+            <div>&#128121;</div>
+            <div>&#128122;</div>
+        </div>
+    </div>
+    <script src="/layui/layui.js"></script>
+    <script src="/js/essayEditor.js"></script>
+</body>
+
+</html>
