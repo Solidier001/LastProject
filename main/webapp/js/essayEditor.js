@@ -148,7 +148,7 @@ function headingcontent(layero, index) {
         r = r.substr(r.length - 9);
         var h = document.createElement($(".layui-layer-content .heading-content .style>div>.show").children()[0].tagName);
         $(h).text($(".layui-layer-content .heading-content .input .tittle").val());
-        if (r == "</span>**"||r=="</span>") {
+        if (r == "</span>**" || r == "</span>") {
             $("#reachEdit>div").last().children("span").last().append(h)
         } else {
             $("#reachEdit>div").last().append(h);
@@ -228,10 +228,10 @@ $(".bold").click(function (e) {
     // var r = document.getSelection().getRangeAt(0);
     var r = $("#reachEdit>div").last().html();
     if (r.substr(r.length - 9) == "</span>**") {
-        var cssattr=$("#reachEdit>div").last().children("span").last().css("font-weight")
-        if(cssattr!="normal"&&cssattr!='400'){
+        var cssattr = $("#reachEdit>div").last().children("span").last().css("font-weight")
+        if (cssattr != "normal" && cssattr != '400') {
             $("#reachEdit>div").last().children("span").last().css("font-weight", "normal")
-        }else{
+        } else {
             $("#reachEdit>div").last().children("span").last().css("font-weight", "bolder");
         }
     } else {
@@ -248,10 +248,10 @@ $(".italic").click(function (e) {
     // var r = document.getSelection().getRangeAt(0);
     var r = $("#reachEdit>div").last().html();
     if (r.substr(r.length - 9) == "</span>**") {
-        var cssattr=$("#reachEdit>div").last().children("span").last().css("font-style");
-        if(cssattr=="italic"){
+        var cssattr = $("#reachEdit>div").last().children("span").last().css("font-style");
+        if (cssattr == "italic") {
             $("#reachEdit>div").last().children("span").last().css("font-style", "normal");
-        }else{
+        } else {
             $("#reachEdit>div").last().children("span").last().css("font-style", "italic");
         }
     } else {
@@ -392,5 +392,26 @@ $(".smile").click(function (e) {
             content: $("#smile").html(),
             success: smilecontent
         });
+    })
+});
+$(".upload").click(function () {
+    // alert(navigator.appCodeName);
+    layui.use('layer', function () {
+        layer.confirm('确认上传?', {
+            btn: ['上传', '再看看']
+        }, function (index) {
+            $.post('/project/essay/write',
+                {content: $(".Editor>.show").html()}, function (data) {
+                    if (data == "上传成功") {
+                        if (navigator.appCodeName == "Mozilla") {
+                            open(location, '_self').close();
+                        }
+                    } else {
+                        layer.msg("上传失败");
+                    }
+                })
+        }, function (index) {
+            layer.close(index);
+        })
     })
 });

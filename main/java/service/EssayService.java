@@ -10,6 +10,7 @@ import util.Essaykey;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class EssayService extends HibernateDaoSupport {
     public String Save(Essay essay, String content, String realpath) {
@@ -18,6 +19,7 @@ public class EssayService extends HibernateDaoSupport {
             essay.setContent(Essaykey.Generator(essay.getUser()));
             File file = new File(realpath + essay.getContent());
             FileUtils.writeStringToFile(file, content, "utf-8");
+            essay.setDate(new Date());
             template.save(essay);
             return "success";
         } catch (Exception e) {

@@ -18,6 +18,22 @@ public class Orders implements Serializable {
     private String statu;
     private String review;
 
+    public Orders(String paymethod, String buyrname) {
+        this.paymethod = paymethod;
+        this.buyrname = buyrname;
+    }
+
+    public Orders(String buyrname, String ownername, String statu, String paymethod, String name, int price, Date date, int nunber) {
+        this.price = price;
+        this.date = date;
+        this.paymethod = paymethod;
+        this.buyrname = buyrname;
+        this.ownername = ownername;
+        this.name = name;
+        this.statu = statu;
+        this.nunber=nunber;
+    }
+
     public String getReview() {
         return review;
     }
@@ -134,13 +150,15 @@ public class Orders implements Serializable {
         this.id = id;
     }
 
-    private Goods goods;
-
-    public Goods getGoods() {
-        return goods;
+    public Orders(int price) {
+        this.price = price;
     }
 
-    public void setGoods(Goods goods) {
-        this.goods = goods;
+    public Orders(Date date) {
+        this.date = date;
+    }
+
+    public Orders(String name) {
+        this.name = name;
     }
 }

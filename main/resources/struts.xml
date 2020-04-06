@@ -194,8 +194,10 @@
             </result>
         </action>
         <action name="write" class="actions.EssayAction" method="writeessay">
-            <result name="success"></result>
-            <result name="failure"></result>
+            <result name="success" type="stream">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
         </action>
         <action name="self" class="actions.EssayAction" method="SelfEssays">
             <result type="stream" name="success">

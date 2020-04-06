@@ -12,13 +12,12 @@ import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import service.Callback.SelectOrderListInforAction;
 import service.Callback.UpdateOrderReviewAction;
 import util.ReviewKeyGenreater;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class OrderService extends HibernateDaoSupport {
     public ArrayList<Object> review(User owner) {
@@ -32,40 +31,14 @@ public class OrderService extends HibernateDaoSupport {
     public ArrayList<Orders> ordersListforbuyer(User user, int firstpage, int limt) {
         int index = (firstpage - 1) * 20;
         HibernateTemplate template = this.getHibernateTemplate();
-        DetachedCriteria criteria = DetachedCriteria.forClass(Orders.class);
-        criteria.add(Restrictions.eq("buyr", user));
-        ProjectionList pList = Projections.projectionList();
-        pList.add(Projections.property("id").as("id"));
-        pList.add(Projections.property("price").as("price"));
-        pList.add(Projections.property("date").as("date"));
-        pList.add(Projections.property("good").as("good"));
-        pList.add(Projections.property("nunber").as("nunber"));
-        pList.add(Projections.property("owner").as("owner"));
-        pList.add(Projections.property("paymethod").as("paymethod"));
-        pList.add(Projections.property("statu").as("statu"));
-        criteria.setProjection(pList);
-        criteria.setResultTransformer(Transformers.aliasToBean(Orders.class ));
-        ArrayList<Orders> list= (ArrayList<Orders>) template.findByCriteria(criteria, index, 20);
+        ArrayList<Orders> list=template.execute(new SelectOrderListInforAction(index,limt,user,null));
         return list;
     }
 
     public ArrayList<Orders> ordersList(User user, int firstpage, int limt) {
         int index = (firstpage - 1) * 20;
         HibernateTemplate template = this.getHibernateTemplate();
-        DetachedCriteria criteria = DetachedCriteria.forClass(Orders.class);
-        criteria.add(Restrictions.eq("owner", user));
-        ProjectionList pList = Projections.projectionList();
-        pList.add(Projections.property("id").as("id"));
-        pList.add(Projections.property("price").as("price"));
-        pList.add(Projections.property("date").as("date"));
-        pList.add(Projections.property("good").as("good"));
-        pList.add(Projections.property("nunber").as("nunber"));
-        pList.add(Projections.property("buyr").as("buyr"));
-        pList.add(Projections.property("paymethod").as("paymethod"));
-        pList.add(Projections.property("statu").as("statu"));
-        criteria.setProjection(pList);
-        criteria.setResultTransformer(Transformers.aliasToBean(Orders.class ));
-        ArrayList<Orders> list= (ArrayList<Orders>) template.findByCriteria(criteria, index, 20);
+        ArrayList<Orders> list= template.execute(new SelectOrderListInforAction(index, limt,null,user));
         return list;
     }
 

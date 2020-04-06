@@ -42,7 +42,8 @@ public class OrderAction extends ActionSupport implements ModelDriven<Orders>, M
         try{
             ArrayList<Orders> list=orderService.ordersList(((User)session.getAttribute("user")),firstindex,limt);
             MessaeforTable messaeforTable=new MessaeforTable( list,orderService.getcount((User)session.getAttribute("user")),0,"");
-            inputStream=new ByteArrayInputStream(gson.toJson(messaeforTable).getBytes("utf-8"));
+            gson.toJson(list);
+            inputStream=new ByteArrayInputStream(gson.toJson("5555").getBytes("utf-8"));
         }catch (ObjectNotFoundException e){
             e.printStackTrace();
             MessaeforTable messaeforTable=new MessaeforTable( new ArrayList<Orders>(),orderService.getcount((User)session.getAttribute("user")),0,"");

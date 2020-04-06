@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import daomain.Essay;
+import daomain.User;
 import org.apache.http.HttpRequest;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.web.context.WebApplicationContext;
@@ -46,13 +47,16 @@ public class EssayAction extends ActionSupport implements ModelDriven<Essay>, Mo
         return inputStream;
     }
 
-    public String writeessay(){
+    public String writeessay() throws UnsupportedEncodingException {
         String content=request.getParameter("content");
-
-        if (essayService.Save(essay,content,realpath).equals("success"))
-            return SUCCESS;
+        System.out.println(content);
+        essay.setUser((User)session.getAttribute("user"));
+        String result=essayService.Save(essay,content,realpath);
+        if (result.equals("success"))
+            inputStream=new ByteArrayInputStream("上传成功".getBytes("utf-8"));
         else
-            return FAILURE;
+            inputStream=new ByteArrayInputStream("上传失败".getBytes("utf-8"));
+        return SUCCESS;
     }
 
     public String ShowEssays() throws UnsupportedEncodingException {

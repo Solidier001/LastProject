@@ -49,6 +49,14 @@ public class AccountTestFilter implements Filter {
                     chain.doFilter(req, resp);
                 }
                 break;
+            case "essayEditor.html":
+                if (session.getAttribute("user") == null) {
+                    session.setAttribute("request",'/'+"essayEditor.html");
+                    response.sendRedirect("/index.html");
+                } else {
+                    chain.doFilter(req, resp);
+                }
+                break;
             default:
                     chain.doFilter(req, resp);
         }
