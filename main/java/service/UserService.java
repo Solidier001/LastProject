@@ -12,6 +12,8 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import pojo.AlipayToken;
+import service.Callback.UpdateAuthTokenAction;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -21,7 +23,6 @@ import java.util.Random;
 import java.util.UUID;
 
 public class UserService extends HibernateDaoSupport {
-
 
 
     public void buy(Orders orders) {
@@ -134,4 +135,10 @@ public class UserService extends HibernateDaoSupport {
         }
         return user;
     }
+
+    public void UpdateAuthToken(AlipayToken token,User user){
+        HibernateTemplate template=this.getHibernateTemplate();
+        template.execute(new UpdateAuthTokenAction(token,user));
+    }
+
 }

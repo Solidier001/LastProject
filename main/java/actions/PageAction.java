@@ -13,6 +13,7 @@ import service.GoodsService;
 import service.MessageService;
 import util.OrmService;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,10 +25,11 @@ import java.util.ArrayList;
 public class PageAction extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpSession session=request.getSession();
-    WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-    GoodsService service = (GoodsService) wac.getBean("GoodsService");
+    @Resource(name = "GoodsService")
+    GoodsService service;
     Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
-    private MessageService messageService=(MessageService)wac.getBean("MessageService");
+    @Resource(name="MessageService")
+    private MessageService messageService;
     private InputStream inputStream;
 
     public InputStream getInputStream() {

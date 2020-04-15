@@ -3,14 +3,21 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop.xsd">
-
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+    <!--<context:annotation-config/>-->
+    <context:component-scan base-package="service"/>
+    <context:component-scan base-package="actions"/>
+    <context:component-scan base-package="daomain"/>
+    <!--<context:component-scan base-package="pojo"/>-->
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/seconderymarket?serverTimezone=Asia/Shanghai"/>
@@ -43,7 +50,7 @@
         <property name="name" value="sddfs"/>
         <property name="password" value="avfvsdf"/>
     </bean>
-    <bean id="client" class="com.alipay.api.DefaultAlipayClient">
+    <bean id="alipayClient" class="com.alipay.api.DefaultAlipayClient" scope="singleton">
         <constructor-arg name="appId" type="java.lang.String" value="2016101800718419"/>
         <constructor-arg type="java.lang.String" name="charset" value="utf-8"/>
         <constructor-arg name="privateKey" type="java.lang.String"
@@ -71,22 +78,22 @@
     <bean class="org.springframework.orm.hibernate5.HibernateTemplate" id="HibernateTemplate">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean class="util.OrmService" id="OrmService">
+    <bean class="util.OrmService" id="OrmService" scope="singleton">
         <property name="hibernateTemplate" ref="HibernateTemplate"/>
     </bean>
-    <bean class="service.GoodsService" id="GoodsService">
+    <bean class="service.GoodsService" id="GoodsService" scope="singleton">
         <property name="hibernateTemplate" ref="HibernateTemplate"/>
     </bean>
-    <bean class="service.UserService" id="UserService">
+    <bean class="service.UserService" id="UserService" scope="singleton">
         <property name="hibernateTemplate" ref="HibernateTemplate"/>
     </bean>
-    <bean class="service.OrderService" id="OrderService">
+    <bean class="service.OrderService" id="OrderService" scope="singleton">
         <property name="hibernateTemplate" ref="HibernateTemplate"/>
     </bean>
-    <bean class="service.MessageService" id="MessageService">
+    <bean class="service.MessageService" id="MessageService" scope="singleton">
         <property name="hibernateTemplate" ref="HibernateTemplate"/>
     </bean>
-    <bean class="service.EssayService" id="EssayService">
+    <bean class="service.EssayService" id="EssayService" scope="singleton">
         <property name="hibernateTemplate" ref="HibernateTemplate"/>
     </bean>
     <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">

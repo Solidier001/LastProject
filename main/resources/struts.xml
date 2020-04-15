@@ -22,10 +22,10 @@
                 <param name="inputName">inputStream</param>
             </result>
         </action>
-        <action name="login" class="actions.AccountAction" method="login">
-            <result type="redirect" name="success">/fistpage2.html</result>
-            <result type="redirect" name="false">/index.html</result>
-        </action>
+        <!--<action name="login" class="actions.AccountAction" method="login">-->
+            <!--<result type="redirect" name="success">/fistpage2.html</result>-->
+            <!--<result type="redirect" name="false">/index.html</result>-->
+        <!--</action>-->
         <action name="rigister" class="actions.AccountAction" method="rigister">
             <result type="redirect">/index.html</result>
         </action>
@@ -33,7 +33,10 @@
             <result name="success" type="redirect">/fistpage2.html</result>
         </action>
         <action name="buy" class="actions.AccountAction" method="buy">
-           <result name="success">/result.jsp</result>
+            <result name="success" type="stream">
+                <param name="contentType">image/jpeg</param>
+                <param name="inputName">inputStream</param>
+            </result>
            <result name="In person">/fistpage2.html</result>
         </action>
         <action name="test" class="actions.AccountAction" method="test">

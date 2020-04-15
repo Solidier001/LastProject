@@ -1,40 +1,25 @@
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.orm.hibernate5.HibernateTemplate;
-import pojo.FS;
-import util.OrmService;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.google.gson.Gson;
+import daomain.Goods;
+import org.junit.Test;
+import pojo.BzContent;
+import pojo.GoodsDetails;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        OrmService ormService = ((OrmService) context.getBean("OrmService"));
-        Document document = Jsoup.parse(new File("E:\\LastProject\\src\\test\\java\\test.txt"), "utf-8");
-        Elements Ps=document.getElementsByTag("p");
-        String faculty=null;
-        Pattern p=Pattern.compile("<.*");
-        Pattern p2=Pattern.compile(".*学院");
-        for (Element P:Ps){
-            Matcher matcher=p.matcher(P.html());
-            if (!matcher.matches()){
-                Matcher matcher2=p2.matcher(P.html());
-                if (matcher2.matches())faculty=P.html();
-                else {
-                    FS fs=new FS();
-                    fs.setFaculty(faculty);
-                    fs.setSpecialty(P.html());
-                    ormService.save(fs);
-                }
-            }
-        }
+    public static void main(String[] args) {
+        Goods goods = new Goods();
+        goods.setId("1331");
+        goods.setName("klsdhcskdl ");
+        goods.setTimes(231);
+        goods.setPrice(50);
+        BzContent content = new BzContent()
+                .setOut_trade_no("20150320010101002")
+                .setStore_id("1")
+                .setSubject("god")
+                .setTimeout_express("90m")
+                .setTotal_amount(88.88F)
+                .setGoods_detail(new GoodsDetails(goods));
+        System.out.println(new Gson().toJson(content));
     }
+
 }

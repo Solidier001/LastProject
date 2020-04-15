@@ -1,5 +1,7 @@
 package daomain;
 
+import pojo.AlipayToken;
+
 import java.util.Set;
 
 public class User {
@@ -9,9 +11,7 @@ public class User {
     private String id;
     private String nickname;
     private String sex;
-    private Set<Goods> Goods;
     private String locations;
-    private Set<daomain.Orders> Orders;
     private String reviewuser;
     private String faculty;
     private String specialty;
@@ -20,10 +20,29 @@ public class User {
     private String stuid;
     private String email;
     private String fscstr;
-    private String OAuthCode;
+    private String AuthToken;
+    private String RefreshToken;
     private String alipayid;
     private String QQ;
     private String phone;
+    private Set<daomain.Goods> Goods;
+    private Set<daomain.Orders> Orders;
+
+    public Set<daomain.Orders> getOrders() {
+        return Orders;
+    }
+
+    public void setOrders(Set<daomain.Orders> orders) {
+        Orders = orders;
+    }
+
+    public Set<daomain.Goods> getGoods() {
+        return Goods;
+    }
+
+    public void setGoods(Set<daomain.Goods> goods) {
+        Goods = goods;
+    }
 
     public String getPhone() {
         return phone;
@@ -114,28 +133,12 @@ public class User {
         this.reviewuser = reviewuser;
     }
 
-    public Set<daomain.Orders> getOrders() {
-        return Orders;
-    }
-
-    public void setOrders(Set<daomain.Orders> orders) {
-        Orders = orders;
-    }
-
     public String getLocations() {
         return locations;
     }
 
     public void setLocations(String locations) {
         this.locations = locations;
-    }
-
-    public Set<Goods> getGoods() {
-        return Goods;
-    }
-
-    public void setGoods(Set<Goods> goods) {
-        Goods = goods;
     }
 
     public String getSex() {
@@ -178,12 +181,25 @@ public class User {
         this.name = name;
     }
 
-    public String getOAuthCode() {
-        return OAuthCode;
+    public String getAuthToken() {
+        return AuthToken;
     }
 
-    public void setOAuthCode(String OAuthCode) {
-        this.OAuthCode = OAuthCode;
+    public void setAuthToken(String authToken) {
+        AuthToken = authToken;
+    }
+
+    public void setAlipayToken(AlipayToken token){
+        this.AuthToken=token.getAuthToken();
+        this.RefreshToken=token.getRefreshToken();
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        RefreshToken = refreshToken;
+    }
+
+    public String getRefreshToken() {
+        return RefreshToken;
     }
 
     @Override

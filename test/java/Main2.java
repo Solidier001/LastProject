@@ -15,9 +15,9 @@ public class Main2 {
     public static void main(String[] args){
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
         HibernateTemplate template= (HibernateTemplate) context.getBean("HibernateTemplate");
-        User user= (User) template.get(User.class.getName(),"25304739406");
+        /*User user= (User) template.get(User.class.getName(),"25304739406");
         ArrayList<Orders>list= template.execute(new SelectOrderListInforAction(0, 20,null,user));
         String str=new Gson().toJson(list);
-        System.out.println(str);
+        System.out.println(str);*/
     }
 }

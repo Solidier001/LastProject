@@ -5,29 +5,46 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.alipay.api.request.AlipayTradePrecreateRequest;
+import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.zxing.WriterException;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-import config.AlipayConfig;
 import daomain.Goods;
 import daomain.Orders;
 import daomain.User;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.ParentPackage;
+import org.apache.struts2.convention.annotation.Result;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import pojo.BzContent;
+import pojo.GoodsDetails;
+import service.AlipayService;
 import service.GoodsService;
 import service.MessageService;
 import service.UserService;
 import util.OrderKeyGenreater;
 import util.OrmService;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 
+@Controller
+@Scope("prototype")
+@ParentPackage("struts-default")
+@Namespace("/project/account")
 public class AccountAction extends ActionSupport implements ModelDriven<User>, MoreResult {
     private File img;
 
@@ -52,6 +69,9 @@ public class AccountAction extends ActionSupport implements ModelDriven<User>, M
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
 
     private User user = new User();
+
+    @Resource
+    private AlipayService alipayService;
 
     public InputStream getInputStream() {
         return inputStream;
@@ -80,7 +100,10 @@ public class AccountAction extends ActionSupport implements ModelDriven<User>, M
     public void setImg(File img) {
         this.img = img;
     }
-
+@Action(value = "login",results = {
+        @Result(name = "success", type = "redirect", location = "/fistpage2.html"),
+        @Result(name = "false", type = "redirect", location = "/index.html")
+})
     public String login() {
 //        System.out.println((String) session.getAttribute("request"));
         try {
@@ -110,7 +133,7 @@ public class AccountAction extends ActionSupport implements ModelDriven<User>, M
         return SUCCESS;
     }
 
-    public String buy() throws UnsupportedEncodingException, AlipayApiException {
+    public String buy() throws IOException, AlipayApiException, WriterException {
         Orders order = new Orders();
         Goods goods = new Goods();
         goods.setId(request.getParameter("goodid"));
@@ -130,17 +153,16 @@ public class AccountAction extends ActionSupport implements ModelDriven<User>, M
             service.update(goods);
             return "In person";
         } else {
-            AlipayTradePagePayRequest alipayRequest = (AlipayTradePagePayRequest) wac.getBean("alipayTradePagePayRequest");
-            String out_trade_no = order.getId();
-            String total_amount = String.valueOf(order.getPrice());
-            String subject = goods.getName();
-            String body = goods.getDetail();
-            alipayRequest.setBizContent("{\"out_trade_no\":\"" + out_trade_no + "\","
-                    + "\"total_amount\":\"" + total_amount + "\","
-                    + "\"subject\":\"" + subject + "\","
-                    + "\"body\":\"" + body + "\","
-                    + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
-            request.setAttribute("alipayrequest",alipayRequest);
+            BzContent content=new BzContent()
+                    .setGoods_detail(new GoodsDetails(goods))
+                    .setOut_trade_no(OrderKeyGenreater.getkey())
+                    .setSubject(goods.getName())
+                    .setTotal_amount(order.getPrice())
+                    .setTimeout_express("3m");
+            String QrCode=alipayService.ForUserQrCode(content,user.getAuthToken());
+            ByteArrayOutputStream outputStream=new ByteArrayOutputStream();
+            alipayService.QREncode(QrCode,outputStream);
+            inputStream = new ByteArrayInputStream(outputStream.toByteArray());
             goods.setTimes(goods.getTimes() - 1);
             service.save(order);
             service.update(goods);

@@ -20,6 +20,8 @@
         <property name="QQ" type="java.lang.String" column="QQ"/>
         <property name="phone" type="java.lang.String" column="phone"/>
         <property name="alipayid" type="java.lang.String" column="alipayid"/>
+        <property name="refreshToken" type="java.lang.String" column="refreshToken"/>
+        <property name="authToken" type="java.lang.String" column="authToken"/>
         <set inverse="true" name="Goods" cascade="all" lazy="false">
             <key column="c_id"/>
             <one-to-many class="Goods"/>
