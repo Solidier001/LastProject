@@ -66,3 +66,9 @@ button[type="reset"]+.layui-btn{
 .buttonback>*{
     display: block;
 }
+.lable:hover{
+    color: #a8a8a8;
+}
+.lable:active{
+    color: #d8d8d8;
+}

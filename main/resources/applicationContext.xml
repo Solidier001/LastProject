@@ -41,6 +41,7 @@
                 <value>daomain/Orders.hbm.xml</value>
                 <value>daomain/Message.hbm.xml</value>
                 <value>daomain/Essay.hbm.xml</value>
+                <value>daomain/Review.hbm.xml</value>
                 <value>/pojo/FS.hbm.xml</value>
             </list>
         </property>
@@ -67,11 +68,15 @@
     </bean>
     <bean id="authenticator" class="org.apache.commons.mail.DefaultAuthenticator">
         <constructor-arg name="userName" value="asdfghjmn121@163.com" type="java.lang.String"/>
-        <constructor-arg name="password" value="LastProject1" type="java.lang.String"/>
+        <constructor-arg name="password" value="IPEOFWQCFQDCZROI" type="java.lang.String"/>
     </bean>
-    <bean class="org.apache.commons.mail.HtmlEmail">
+    <bean class="org.apache.commons.mail.SimpleEmail" id="email" scope="prototype">
         <property name="hostName" value="smtp.163.com"/>
+        <property name="smtpPort" value="994"/>
         <property name="authenticator" ref="authenticator"/>
+        <property name="SSLOnConnect" value="true"/>
+        <property name="subject" value="校园二手验证码"/>
+        <property name="from" value="asdfghjmn121@163.com"/>
         <property name="charset" value="utf-8"/>
     </bean>
 
@@ -95,6 +100,9 @@
         <property name="hibernateTemplate" ref="HibernateTemplate"/>
     </bean>
     <bean class="service.EssayService" id="EssayService" scope="singleton">
+        <property name="hibernateTemplate" ref="HibernateTemplate"/>
+    </bean>
+    <bean class="service.ReviewService" id="reviewService" scope="singleton">
         <property name="hibernateTemplate" ref="HibernateTemplate"/>
     </bean>
     <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">

@@ -13,6 +13,7 @@
         <property name="date" type="java.util.Date" column="o_date"/>
         <property name="nunber" type="int" column="g_number"/>
         <property name="review" type="java.lang.String" column="review"/>
+        <property name="hasReview" type="java.lang.String" column="hasreview"/>
         <many-to-one name="good" class="Goods" lazy="false" column="g_id" cascade="all"/>
         <many-to-one name="owner" class="User" lazy="false" column="own_id" cascade="all"/>
         <many-to-one name="buyr" class="User" lazy="false" column="buy_id" cascade="all"/>

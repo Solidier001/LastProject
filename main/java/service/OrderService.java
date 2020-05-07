@@ -1,5 +1,6 @@
 package service;
 
+import dao.Callback.UpdateOrderReviewStatu;
 import daomain.Goods;
 import daomain.Orders;
 import daomain.User;
@@ -8,25 +9,32 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
-import service.Callback.SelectOrderListInforAction;
-import service.Callback.UpdateOrderReviewAction;
+import dao.Callback.SelectOrderListInforAction;
+import pojo.ReviewList;
 import util.ReviewKeyGenreater;
 
 import java.io.File;
 import java.util.ArrayList;
 
 public class OrderService extends HibernateDaoSupport {
-    public ArrayList<Object> review(User owner) {
+
+    public void Save(Orders orders){
+        HibernateTemplate template=this.getHibernateTemplate();
+        orders.setReview("/review/orders/"+ReviewKeyGenreater.gerDirKey()+'/');
+        orders.setHasReview("null");
+        template.save(orders);
+    }
+
+   /* public ArrayList<Object> review(User owner) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Orders.class);
         criteria.add(Restrictions.eq("owner", owner));
         criteria.setProjection(Projections.property("reviewid"));
         ArrayList<Object> list = (ArrayList<Object>) this.getHibernateTemplate().findByCriteria(criteria);
         return list;
-    }
+    }*/
 
     public ArrayList<Orders> ordersListforbuyer(User user, int firstpage, int limt) {
         int index = (firstpage - 1) * 20;
@@ -79,31 +87,39 @@ public class OrderService extends HibernateDaoSupport {
         template.update(orders);
     }
 
-    public String readOrderReview(String id) {
+    /*public String readOrderReview(String id) {
         HibernateTemplate template = this.getHibernateTemplate();
         DetachedCriteria criteria = DetachedCriteria.forClass(Orders.class);
         criteria.setProjection(Projections.property("review"));
         criteria.add(Restrictions.eq("id", id));
         ArrayList<String> list = (ArrayList<String>) template.findByCriteria(criteria);
         return list.get(0);
+    }*/
+
+    public String getReiew(String id){
+        HibernateTemplate template=this.getHibernateTemplate();
+        DetachedCriteria criteria=DetachedCriteria.forClass(Orders.class);
+        criteria.add(Restrictions.eq("id",id));
+        criteria.setProjection(Projections.property("review"));
+        ArrayList<String> list= (ArrayList<String>) template.findByCriteria(criteria);
+        return list.get(0);
     }
 
-    public String writeOrderReview(User user, String review, String rootpath, Orders order) {
-        HibernateTemplate template = this.getHibernateTemplate();
+    public ReviewList reviewlist(String realpath,String id){
+        String root=getReiew(id);
         try {
-            String filename = readOrderReview(order.getId());
-            if (filename == null || filename.equals("")) {
-                filename = new ReviewKeyGenreater().getKey() + ".txt";
-                System.out.println(rootpath + user.getId());
-                FileUtils.writeStringToFile(new File(rootpath + user.getId() + '/' + filename), review, "utf-8");
-                HibernateCallback callback = new UpdateOrderReviewAction(user, filename, order.getId());
-                template.execute(callback);
-            }
-            else FileUtils.writeStringToFile(new File(rootpath + user.getId() + '/' + filename), review, "utf-8");
-            return "success";
-        } catch (Exception e) {
+            File file = new File(realpath);
+            String[] list=file.list();
+            return new ReviewList(root,list);
+        }catch (NullPointerException e){
             e.printStackTrace();
-            return e.getMessage();
+            return new ReviewList(root,null);
         }
+    }
+
+    public void updateReviewStatu(String id){
+        UpdateOrderReviewStatu callback=new UpdateOrderReviewStatu(id);
+        HibernateTemplate template=this.getHibernateTemplate();
+        template.execute(callback);
     }
 }

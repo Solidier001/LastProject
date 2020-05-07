@@ -1,12 +1,6 @@
 package actions;
 
 import ActionExtension.MoreResult;
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.request.AlipayTradePagePayRequest;
-import com.alipay.api.request.AlipayTradePrecreateRequest;
-import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.zxing.WriterException;
@@ -14,37 +8,35 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import daomain.Goods;
 import daomain.Orders;
+import daomain.Review;
 import daomain.User;
+import org.apache.commons.mail.EmailException;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import pojo.BzContent;
 import pojo.GoodsDetails;
-import service.AlipayService;
-import service.GoodsService;
-import service.MessageService;
-import service.UserService;
+import pojo.ReviewList;
+import service.*;
 import util.OrderKeyGenreater;
 import util.OrmService;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-@Controller
-@Scope("prototype")
-@ParentPackage("struts-default")
-@Namespace("/project/account")
+
 public class AccountAction extends ActionSupport implements ModelDriven<User>, MoreResult {
     private File img;
 
@@ -62,16 +54,23 @@ public class AccountAction extends ActionSupport implements ModelDriven<User>, M
 
     private UserService userService = (UserService) wac.getBean("UserService");
 
-    private GoodsService goodsService = (GoodsService) wac.getBean("GoodsService");
+    @Resource
+    private AlipayService alipayService;
+
+    @Resource
+    private ReviewService reviewService;
+
+    @Resource(name = "OrderService")
+    private OrderService orderService;
+
+    @Autowired
+    private ServletContext servletContext;
 
     private InputStream inputStream;
 
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
 
     private User user = new User();
-
-    @Resource
-    private AlipayService alipayService;
 
     public InputStream getInputStream() {
         return inputStream;
@@ -100,10 +99,8 @@ public class AccountAction extends ActionSupport implements ModelDriven<User>, M
     public void setImg(File img) {
         this.img = img;
     }
-@Action(value = "login",results = {
-        @Result(name = "success", type = "redirect", location = "/fistpage2.html"),
-        @Result(name = "false", type = "redirect", location = "/index.html")
-})
+
+
     public String login() {
 //        System.out.println((String) session.getAttribute("request"));
         try {
@@ -123,7 +120,8 @@ public class AccountAction extends ActionSupport implements ModelDriven<User>, M
     }
 
     public String rigister() throws IOException {
-        userService.rigister(user, img, ServletActionContext.getServletContext().getRealPath("/img/portait"));
+        String reviewrealpath=servletContext.getRealPath("/review/user/");
+        userService.rigister(user, img, servletContext.getRealPath("/img/portait"),reviewrealpath);
         return SUCCESS;
     }
 
@@ -133,7 +131,8 @@ public class AccountAction extends ActionSupport implements ModelDriven<User>, M
         return SUCCESS;
     }
 
-    public String buy() throws IOException, AlipayApiException, WriterException {
+    public String buy() throws IOException, WriterException {
+        String reviewpath=ServletActionContext.getServletContext().getRealPath("/review/orders/");
         Orders order = new Orders();
         Goods goods = new Goods();
         goods.setId(request.getParameter("goodid"));
@@ -153,18 +152,18 @@ public class AccountAction extends ActionSupport implements ModelDriven<User>, M
             service.update(goods);
             return "In person";
         } else {
-            BzContent content=new BzContent()
+            BzContent content = new BzContent()
                     .setGoods_detail(new GoodsDetails(goods))
-                    .setOut_trade_no(OrderKeyGenreater.getkey())
+                    .setOut_trade_no(order.getId())
                     .setSubject(goods.getName())
                     .setTotal_amount(order.getPrice())
                     .setTimeout_express("3m");
-            String QrCode=alipayService.ForUserQrCode(content,user.getAuthToken());
-            ByteArrayOutputStream outputStream=new ByteArrayOutputStream();
-            alipayService.QREncode(QrCode,outputStream);
+            String QrCode = alipayService.ForUserQrCode(content, user.getAuthToken());
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            alipayService.QREncode(QrCode, outputStream);
             inputStream = new ByteArrayInputStream(outputStream.toByteArray());
             goods.setTimes(goods.getTimes() - 1);
-            service.save(order);
+            orderService.Save(order);
             service.update(goods);
             return SUCCESS;
         }
@@ -181,21 +180,28 @@ public class AccountAction extends ActionSupport implements ModelDriven<User>, M
         return SUCCESS;
     }
 
-    public String review() throws IOException {
-        String realpath = ServletActionContext.getServletContext().getRealPath("/review/users");
-        userService.review(realpath, request.getParameter("review"), ((User) session.getAttribute("user")).getId());
+    public String review() throws UnsupportedEncodingException {
+        User user= (User) session.getAttribute("user");
+        String reviewstr=request.getParameter("review");
+        String realpath = ServletActionContext.getServletContext().getRealPath(user.getReviewToUser());
+        Review review=new Review("Order");
+        String result=reviewService.Save(review,user,reviewstr,user.getReviewToUser(),realpath,null);
+        inputStream=new ByteArrayInputStream(result.getBytes("utf-8"));
         return SUCCESS;
     }
-
+//重构
     public String appendreview() throws IOException {
-        String realpath = ServletActionContext.getServletContext().getRealPath("/review/users");
+        User user= (User) session.getAttribute("user");
+        String reviewstr=request.getParameter("review");
+        String realpath = ServletActionContext.getServletContext().getRealPath(user.getReviewToUser());
         userService.appendreview(realpath, request.getParameter("review"), ((User) session.getAttribute("user")).getId());
         return SUCCESS;
     }
 
     public String reviewlist() throws UnsupportedEncodingException {
-        String realpath = ServletActionContext.getServletContext().getRealPath("/review/users");
-        ArrayList<String> list = userService.reviewlist(((User) session.getAttribute("user")).getId(), realpath);
+        User user= (User) session.getAttribute("user");
+        String realpath = ServletActionContext.getServletContext().getRealPath(user.getReviewToUser());
+        ReviewList list = userService.reviewlist(user.getId(),realpath);
         inputStream = new ByteArrayInputStream(gson.toJson(list).getBytes("utf-8"));
         return SUCCESS;
     }
@@ -203,6 +209,30 @@ public class AccountAction extends ActionSupport implements ModelDriven<User>, M
     public String usermessage() throws UnsupportedEncodingException {
         user = userService.usermessage(user.getId());
         inputStream = new ByteArrayInputStream(gson.toJson(user).getBytes("utf-8"));
+        return SUCCESS;
+    }
+
+    public String sendOAth() throws UnsupportedEncodingException {
+        String email=request.getParameter("email");
+        try {
+            String code=userService.OAthcode(email);
+            session.setAttribute("OAthcode",code);
+            inputStream=new ByteArrayInputStream("验证码已发送注意查看".getBytes("utf-8"));
+        } catch (EmailException e) {
+            inputStream=new ByteArrayInputStream(e.getMessage().getBytes("utf-8"));
+        }
+        return SUCCESS;
+    }
+
+    public String verifyOAth() throws UnsupportedEncodingException {
+        String oath=request.getParameter("OAth");
+        String OAthcode= (String) session.getAttribute("OAthcode");
+        if (oath.equals(OAthcode)){
+            session.removeAttribute("OAthcode");
+            inputStream=new ByteArrayInputStream("correct".getBytes("utf-8"));
+        }else{
+            inputStream=new ByteArrayInputStream(FALSE.getBytes("utf-8"));
+        }
         return SUCCESS;
     }
 

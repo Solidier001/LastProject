@@ -1,181 +1,43 @@
-<!DOCTYPE HTML
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-
-
-    <title>contenteditable</title>
-
-    <style>
-        * {
-
-            margin: 0;
-            padding: 0;
-
-        }
-
-        .im-message-area {
-
-            width: 98%;
-
-            padding: 2px;
-
-            height: 75px;
-
-            border: #000 solid 1px;
-
-            background: #fff;
-
-            font: 12px/20px arial, "5b8b4f53";
-
-            word-wrap: break-word;
-
-            overflow-y: auto;
-
-            line-height: 1;
-
-        }
-
-        .ul {
-            display: none;
-        }
-
-        .ul li {
-
-            background-color: #CCC;
-
-            width: 50px;
-
-        }
-    </style>
-
-    <script language="javascript" type="text/javascript">
-        function inimage(text) {
-
-            var obj = $(".im-message-area")[0];
-
-            var range, node;
-
-            if (!obj.hasfocus) {
-
-                obj.focus();
-
-            }
-
-            if (window.getSelection && window.getSelection().getRangeAt) {
-
-                range = window.getSelection().getRangeAt(0);
-
-                range.collapse(false);
-
-                node = range.createContextualFragment(text);
-
-                var c = node.lastChild;
-
-                range.insertNode(node);
-
-                if (c) {
-
-                    range.setEndAfter(c);
-
-                    range.setStartAfter(c)
-
-                }
-
-                var j = window.getSelection();
-
-                j.removeAllRanges();
-
-                j.addRange(range);
-
-
-
-            } else if (document.selection && document.selection.createRange) {
-
-                document.selection.createRange().pasteHTML(text);
-
-            }
-
-        }
-
-        $(document).ready(function () {
-
-            $('#button').click(function () {
-
-                $('.ul').show();
-
-            })
-
-            $('.ul li').each(function () {
-
-                $(this).click(function () {
-
-                    inimage($(this).text());
-
-                })
-
-            })
-
-        });
-    </script>
-
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>Document</title>
 </head>
 
 <body>
-    <button type="button"
-        onclick="document.getElementById('test').focus(); insertHtmlAtCaret('<b>INSERTED</b>');">插入字符</button>
-
-    <div contentEditable="true" style="height:50px; border:2px solid red;" id="test"> </div>
-
-     <script>
-        function insertHtmlAtCaret(html) {
-
-            var sel, range;
-
-            if (window.getSelection) {
-
-                // IE9 and non-IE
-
-                sel = window.getSelection();
-
-                if (sel.getRangeAt && sel.rangeCount) {
-
-                    range = sel.getRangeAt(0);
-
-                    range.deleteContents();
-
-                    // Range.createContextualFragment() would be useful here but is
-
-                    // non-standard and not supported in all browsers (IE9, for one)
-
-                    var el = document.createElement("div");
-
-                    el.innerHTML = html;
-
-                    
-
-                    range.insertNode(document.createTextNode("frag"));
-
-                    // Preserve the selection
-
-
-                }
-
-            } else if (document.selection && document.selection.type != "Control") {
-
-                // IE < 9
-
-                document.selection.createRange().pasteHTML(html);
-
-            }
-
-        }
+    <form>
+        <input class="target" type="text" value="Field 1">
+        <select name="faculty">
+            <option value="">请选择院系</option>
+            <option value="材料与化工学院">材料与化工学院</option>
+            <option value="电气与光电工程学院">电气与光电工程学院</option>
+            <option value="电子与信息工程学院">电子与信息工程学院</option>
+            <option value="法学院">法学院</option>
+            <option value="环境与旅游学院">环境与旅游学院</option>
+            <option value="机械与车辆工程学院">机械与车辆工程学院</option>
+            <option value="建筑与土木工程学院">建筑与土木工程学院</option>
+            <option value="金融与数学学院">金融与数学学院</option>
+            <option value="经济与管理学院">经济与管理学院</option>
+            <option value="生物与制药工程学院">生物与制药工程学院</option>
+            <option value="体育学院">体育学院</option>
+            <option value="外国语学院">外国语学院</option>
+            <option value="文化与传媒学院">文化与传媒学院</option>
+            <option value="艺术学院">艺术学院</option>
+            <option value="马克思主义学院">马克思主义学院</option>
+        </select>
+    </form>
+    <div id="other">
+        Trigger the handler
+    </div>
+    <script>
+        $("select[name='faculty']").change(function () {
+            alert("Handler for .change() called.");
+        });
     </script>
 </body>
 

@@ -1,20 +1,30 @@
 package service;
 
-import daomain.Orders;
+import dao.Callback.SelectUserInfor;
 import daomain.User;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
+import org.apache.commons.mail.SimpleEmail;
 import org.apache.struts2.ServletActionContext;
 import org.dom4j.*;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import org.springframework.web.context.WebApplicationContext;
 import pojo.AlipayToken;
-import service.Callback.UpdateAuthTokenAction;
+import dao.Callback.UpdateAuthTokenAction;
+import pojo.FS;
+import pojo.ReviewList;
+import util.ReviewKeyGenreater;
 
+import javax.annotation.Resource;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,13 +34,10 @@ import java.util.UUID;
 
 public class UserService extends HibernateDaoSupport {
 
+    @Autowired
+    WebApplicationContext context;
 
-    public void buy(Orders orders) {
-        HibernateTemplate template = this.getHibernateTemplate();
-        template.save(orders);
-    }
-
-    public void rigister(User user,File img,String realpath) throws IOException {
+    public void rigister(User user,File img,String realpath,String reviewrealpath) throws IOException {
         SimpleDateFormat format=new SimpleDateFormat("yyyyMMddss");
         String datestr= format.format(new Date());
         String filename=datestr+".png";
@@ -40,9 +47,11 @@ public class UserService extends HibernateDaoSupport {
         HibernateTemplate template = this.getHibernateTemplate();
         user.setFscstr(user.getFaculty()+' '+user.getSpecialty()+' '+user.getTeam());
         System.out.println(user.getFscstr());
+        user.setReviewToUser(realpath+ new ReviewKeyGenreater().getKey());
         user.setLocations(initLocations());
         template.save(User.class.getName(),user);
     }
+
     public String initLocations() {
         String realpath = ServletActionContext.getServletContext().getRealPath("/locations");
         Document document = DocumentHelper.createDocument();
@@ -63,6 +72,7 @@ public class UserService extends HibernateDaoSupport {
         }
         return XmlName;
     }
+
     public void AlterLocations(String Xml,String[] locations) throws FileNotFoundException, DocumentException {
         try {
             SAXReader reader = new SAXReader();
@@ -90,17 +100,20 @@ public class UserService extends HibernateDaoSupport {
             e.printStackTrace();
         }
     }
-    public void review(String realpath,String reviewstr,String id) throws IOException {
+
+    /*public void review(String realpath,String reviewstr,String id) throws IOException {
         HibernateTemplate template=this.getHibernateTemplate();
         User user = template.get(User.class,id);
-        FileUtils.writeStringToFile(new File(realpath+user.getReviewuser()),reviewstr,"utf-8");
-    }
+        FileUtils.writeStringToFile(new File(realpath+user.getReviewToUser()),reviewstr,"utf-8");
+    }*/
+
     public void appendreview(String realpath,String reviewstr,String id) throws IOException {
         HibernateTemplate template=this.getHibernateTemplate();
         User user = template.get(User.class,id);
-        FileUtils.writeStringToFile(new File(realpath+user.getReviewuser()),"追评:\n"+reviewstr,"utf-8",true);
+        FileUtils.writeStringToFile(new File(realpath+user.getReviewToUser()),"追评:\n"+reviewstr,"utf-8",true);
     }
-    public ArrayList<String> reviewlist(String id, String realpath){
+
+    /* public ArrayList<String> reviewlist(String id, String realpath){
         HibernateTemplate template=this.getHibernateTemplate();
         User user = template.get(User.class,id);
         File file = new File(realpath+user.getReviewuser());
@@ -110,14 +123,14 @@ public class UserService extends HibernateDaoSupport {
             list.add(file1.getName());
         }
         return list;
-    }
+    }*/
+
     public User usermessage(String id){
         HibernateTemplate template=getHibernateTemplate();
-        User user=template.get(User.class,id);
-        user.setGoods(null);
-        user.setOrders(null);
+        User user=template.execute(new SelectUserInfor(id));
         return user;
     }
+
     public User login(String string,String method) throws IndexOutOfBoundsException{
         HibernateTemplate template=getHibernateTemplate();
         User user;
@@ -141,4 +154,30 @@ public class UserService extends HibernateDaoSupport {
         template.execute(new UpdateAuthTokenAction(token,user));
     }
 
+    public ReviewList reviewlist(String realpath, String root){
+        File file = new File(realpath);
+        String[] list=file.list();
+        return new ReviewList(root,list);
+    }
+
+    public ArrayList<String> getSbyF(String faculty){
+        HibernateTemplate template=getHibernateTemplate();
+        DetachedCriteria criteria=DetachedCriteria.forClass(FS.class);
+        criteria.add(Restrictions.eq("faculty",faculty));
+        criteria.setProjection(Projections.property("specialty"));
+        return (ArrayList<String>) template.findByCriteria(criteria);
+    }
+
+    public String  OAthcode(String emailnumber) throws EmailException {
+        String code=String.valueOf(new Random().nextInt(1000000));
+        SimpleEmail email= (SimpleEmail) context.getBean("email");
+        email.addTo(emailnumber);
+        email.setMsg("您好，您的验证码为"+code);
+        try {
+            email.send();
+        }catch (IllegalStateException e){
+            email.sendMimeMessage();
+        }
+        return code;
+    }
 }

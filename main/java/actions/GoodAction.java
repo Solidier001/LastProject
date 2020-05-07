@@ -6,14 +6,21 @@ import com.google.gson.GsonBuilder;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import daomain.Goods;
+import daomain.Review;
 import daomain.User;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import pojo.MessaeforTable;
+import pojo.ReviewList;
 import service.GoodsService;
 import service.OrderService;
+import service.ReviewService;
 import util.OrmService;
+
+import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
@@ -33,7 +40,8 @@ public class GoodAction extends ActionSupport implements ModelDriven<Goods>, Mor
     private GoodsService goodsService = (GoodsService) wac.getBean("GoodsService");
     private OrderService orderService = (OrderService) wac.getBean("OrderService");
     private Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
-
+    @Resource
+    private ReviewService reviewService;
     public InputStream getInputStream() {
         return inputStream;
     }
@@ -71,22 +79,8 @@ public class GoodAction extends ActionSupport implements ModelDriven<Goods>, Mor
         try {
             ServletActionContext.getRequest().setCharacterEncoding("UTF-8");
             String realpath = ServletActionContext.getServletContext().getRealPath("/img/goods");
-            if (image != null) {
-                File savedir = new File(realpath, UUID.randomUUID().toString().replace("-",""));
-                if (!savedir.getParentFile().exists())
-                    savedir.getParentFile().mkdirs();
-                String picturedir1=savedir.getPath();
-                picturedir1=picturedir1.substring(picturedir1.indexOf("\\img")).replace("\\","/");
-                for (int i = 0; i < image.length; i++) {
-                    File savefile = new File(savedir, UUID.randomUUID().toString().replace("-","")+".jpg");
-                    FileUtils.copyFile(image[i], savefile);
-                }
-                good.setTimes(0);
-                good.setPictures(picturedir1);
-                User user=(User) session.getAttribute("user");
-                good.setUser(user);
-                service.save(good);
-            }
+            User user=(User) session.getAttribute("user");
+            goodsService.Save(user,image,realpath,good);
         } catch (IOException e) {
             e.printStackTrace();
             return ERROR;
@@ -147,28 +141,41 @@ public class GoodAction extends ActionSupport implements ModelDriven<Goods>, Mor
     }
 
     public String review() throws IOException {
-        String realpath=ServletActionContext.getServletContext().getRealPath("/");
-        String review=request.getParameter("review");
-        String uid=((User)session.getAttribute("user")).getId();
+        String reviewstr=request.getParameter("review");
+        User uer=(User)session.getAttribute("user");
         String id=request.getParameter("id");
-        goodsService.review(realpath,review,id,uid);
-        inputStream=new ByteArrayInputStream("成功".getBytes("utf-8"));
+        String location=goodsService.getReiew(id);
+        Review review=new Review("Good");
+        String realpath= ServletActionContext.getServletContext().getRealPath(location);
+        String result=reviewService.Save(review,uer,reviewstr,location,realpath,null);
+        inputStream=new ByteArrayInputStream(result.getBytes("utf-8"));
         return SUCCESS;
     }
 
-    public String appendreview() throws IOException {
+    /*public String appendreview() throws IOException {
         String realpath=ServletActionContext.getServletContext().getRealPath("/");
         goodsService.appendreview(realpath,request.getParameter("review"),request.getParameter("id"));
         inputStream=new ByteArrayInputStream("成功".getBytes("utf-8"));
         return SUCCESS;
-    }
+    }*/
 
     public String reviewlist() throws UnsupportedEncodingException {
-        String realpath=ServletActionContext.getServletContext().getRealPath("/");
-        ArrayList<String> list= goodsService.reviewlist(request.getParameter("id"),realpath);
-        if(list==null||list.size()==0)
+        String path=goodsService.getReiew(request.getParameter("id"));
+        String realpath=ServletActionContext.getServletContext().getRealPath(path);
+        ReviewList list= goodsService.reviewlist(realpath,request.getParameter("id"));
+        if(list.isEmpty())
             inputStream=new ByteArrayInputStream("null".getBytes("utf-8"));
         else inputStream=new ByteArrayInputStream(gson.toJson(list).getBytes("utf-8"));
+        return SUCCESS;
+    }
+
+    public String GoodofUser() throws UnsupportedEncodingException {
+        int firstindex=Integer.valueOf(request.getParameter("firstindex"));
+        int limt=Integer.valueOf(request.getParameter("limt"));
+        User user= (User) session.getAttribute("user");
+        MessaeforTable result=new MessaeforTable(goodsService.ResdAllGoodsbuyuser(user,firstindex,limt),goodsService.getAllNumber(),0,"");
+        String allgood=gson.toJson(result);
+        inputStream= new  ByteArrayInputStream(allgood.getBytes("utf-8"));
         return SUCCESS;
     }
 }

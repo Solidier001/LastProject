@@ -31,10 +31,10 @@ $.post("/project/good/reviewlist", {
     if (data != 'null'){
         $(".noreview").remove();
         $(".reviewitem").remove();
-        var list = JSON.parse(data);
-        for (var i = 0; i < list.length; i++) {
+        var reviewlist = JSON.parse(data);
+        for (var i = 0; i < reviewlist.list.length; i++) {
             $.ajax({
-                url: list[i],
+                url: reviewlist.root+reviewlist.list[i],
                 type: 'post',
                 dataType: 'xml',
                 success: function (data) {
@@ -44,12 +44,13 @@ $.post("/project/good/reviewlist", {
                     var name = document.createElement("div");
                     var date = document.createElement("div");
                     var text = document.createElement("div");
-                    $.post("/project/account/test",
+                    $.post("/project/account/usermessage",
+                        {id:$(data).find("uid").text()},
                         function (data, status, xhr) {
                             if (data != "offline") {
                                 var user = JSON.parse(data);
-                                $(img).css("background-image","url('/img/portait/"+user.img+"')");
-                                $(name).text(user.username);
+                                $(img).css("background-image","url('/img/portait/"+user.imglocation+"')");
+                                $(name).text(user.nickname);
                             }});
                     $(reviewitem).addClass("reviewitem");
                     $(lable).addClass("lable");

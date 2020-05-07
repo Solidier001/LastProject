@@ -17,21 +17,14 @@ public class Orders implements Serializable {
     private String name;
     private String statu;
     private String review;
+    private String hasReview;
 
-    public Orders(String paymethod, String buyrname) {
-        this.paymethod = paymethod;
-        this.buyrname = buyrname;
+    public String getHasReview() {
+        return hasReview;
     }
 
-    public Orders(String buyrname, String ownername, String statu, String paymethod, String name, int price, Date date, int nunber) {
-        this.price = price;
-        this.date = date;
-        this.paymethod = paymethod;
-        this.buyrname = buyrname;
-        this.ownername = ownername;
-        this.name = name;
-        this.statu = statu;
-        this.nunber=nunber;
+    public void setHasReview(String hasReview) {
+        this.hasReview = hasReview;
     }
 
     public String getReview() {
@@ -41,6 +34,28 @@ public class Orders implements Serializable {
     public void setReview(String review) {
         this.review = review;
     }
+
+    public Orders(String paymethod, String buyrname) {
+        this.paymethod = paymethod;
+        this.buyrname = buyrname;
+    }
+
+    public Orders(String id,String buyrname, String ownername, String statu, String paymethod, String name, int price, Date date, int nunber,String hasReview) {
+        this.id = id;
+        this.price = price;
+        this.date = date;
+        this.paymethod = paymethod;
+        this.buyrname = buyrname;
+        this.ownername = ownername;
+        this.name = name;
+        this.statu = statu;
+        this.nunber=nunber;
+        this.hasReview=hasReview;
+}
+
+    
+
+    
 
     public String getOwnername() {
         return ownername;

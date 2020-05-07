@@ -1,5 +1,4 @@
 package actions;
-import service.test;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.opensymphony.xwork2.ActionSupport;
@@ -11,6 +10,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import pojo.MessaeforTable;
 import service.GoodsService;
 import service.MessageService;
+import service.UserService;
 import util.OrmService;
 
 import javax.annotation.Resource;
@@ -30,6 +30,8 @@ public class PageAction extends ActionSupport {
     Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
     @Resource(name="MessageService")
     private MessageService messageService;
+    @Resource(name = "UserService")
+    private UserService userService;
     private InputStream inputStream;
 
     public InputStream getInputStream() {
@@ -54,7 +56,7 @@ public class PageAction extends ActionSupport {
     public String allGoodsforTable() throws Exception{
         int firstindex=Integer.valueOf(request.getParameter("firstindex"));
         int limt=Integer.valueOf(request.getParameter("limt"));
-        MessaeforTable result=new MessaeforTable(service.readAllforTable(firstindex,limt),/*service.getAllNumber()*/service.getAllNumber(),0,"");
+        MessaeforTable result=new MessaeforTable(service.readAllforTable(firstindex,limt),service.getAllNumber(),0,"");
         String allgood=gson.toJson(result);
         inputStream= new  ByteArrayInputStream(allgood.getBytes("utf-8"));
         return SUCCESS;
@@ -89,4 +91,9 @@ public class PageAction extends ActionSupport {
         return SUCCESS;
     }
 
+    public String getSpecialty() throws UnsupportedEncodingException {
+        String faculty=request.getParameter("faculty");
+        inputStream=new ByteArrayInputStream(gson.toJson( userService.getSbyF(faculty)).getBytes("utf-8"));
+        return SUCCESS;
+    }
 }

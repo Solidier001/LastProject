@@ -41,6 +41,10 @@ public class WebSocketTest {
     @OnClose
     public void onclose(Session session) {
         users.remove(id);
+        try {
+            session.close();
+        } catch (IOException e) {
+        }
     }
     @OnMessage
     public void onsend(String msg,Session session) throws IOException {

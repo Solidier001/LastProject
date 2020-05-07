@@ -49,13 +49,9 @@
                 <table id="Orders" lay-filter="myorder"></table>
             </div>
         </div>
-        <!--<script>
-            var listwidth = parseFloat($(".menulist").width());
-            var bodywidth = parseFloat($(".nav").width());
-            var panelwidth = bodywidth-listwidth;
-            $(".adminpanel").width(panelwidth);
-            $(".adminpanel").height(contentheigh);
-        </script>-->
+        <div id="userreview">
+            <div></div>
+        </div>
     </div>
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="detail">查看评论</a>
@@ -66,7 +62,11 @@
         <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="detail">查看评论</a>
     </script>
     <script type="text/html" id="mytools">
-        <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="myreview">我的评论</a>
+        {{#  if(d.hasReview != "null"){ }}
+        <a class="layui-btn layui-btn-xs layui-btn-warm" id="myreview" lay-event="myreview">我的评论</a>
+        {{#  }  else { }}
+        <a class="layui-btn layui-btn-xs layui-btn-warm layui-btn-disabled"  lay-event="null">无评论</a>
+        {{#  } }}
         <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="writereview">评论</a>
         {{#  if(d.statu == "未完成"){ }}
         <a class="layui-btn layui-btn-xs" id="check" lay-event="check">确认完成</a>

@@ -20,7 +20,7 @@ layui.use('table', function () {
     var h = parseInt($(".adminpanel").height()) - 100;
     table.render({
         elem: '#goodstable'
-        , url: '/project/page/allGoodsTable'
+        , url: '/project/good/mygoods'
         , page: true
         , height: h
         , limit: 20
@@ -190,7 +190,7 @@ layui.use('table', function () {
         else if (layEvent == 'writereview') {
             layer.open({
                 type: 2,
-                title: '商品上架',
+                title: '评论',
                 shadeClose: true,
                 shade: false,
                 maxmin: false,
@@ -203,16 +203,18 @@ layui.use('table', function () {
             $.post('/project/order/readreview.action',
                 {id: datas.id}, function (data) {
                     if (data != 'error') {
-                        layer.open({
-                            type: 2,
-                            title: '商品上架',
-                            shadeClose: true,
-                            shade: false,
-                            maxmin: false,
-                            area: ['400px', '500px'],
-                            content: '/review/ordersreview/' + data,
-                            index: 5
+                        var list=JSON.parse(data);
+                        $.post(list.root + list.list[0],function (data) {
+                            layer.alert($(data).find("text").html(), {
+                                skin: 'layui-layer-molv' //样式类名
+                                ,closeBtn: 0
+                                ,title:'我的评论'
+                            });
                         })
+                    }else {
+                        $(tr).find("#myreview").attr("lay-event", "uncheck")
+                        $(tr).find("#myreview").addClass("layui-btn-disabled")
+                        $(tr).find("#myreview").text("无评论")
                     }
                 })
 

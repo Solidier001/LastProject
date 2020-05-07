@@ -1,4 +1,4 @@
-package service.Callback;
+package dao.Callback;
 
 import daomain.User;
 import org.hibernate.HibernateException;

@@ -1,4 +1,4 @@
-package service.Callback;
+package dao.Callback;
 
 import daomain.Orders;
 import daomain.User;
@@ -54,7 +54,7 @@ public class SelectOrderListInforAction implements HibernateCallback<ArrayList<O
 
     @Override
     public ArrayList<Orders> doInHibernate(Session session) throws HibernateException {
-        StringBuffer hql = new StringBuffer("select new Orders(buyr.nickname ,owner.nickname,statu,paymethod,good.name,price,date,nunber) from Orders");
+        StringBuffer hql = new StringBuffer("select new Orders(id, buyr.nickname ,owner.nickname,statu,paymethod,good.name,price,date,nunber,hasReview) from Orders");
         hql.append(hqlappend);
         Query query = session.createQuery(hql.toString());
         if (owner != null) {

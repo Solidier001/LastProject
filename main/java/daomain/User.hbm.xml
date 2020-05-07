@@ -14,7 +14,6 @@
         <property name="nickname" type="java.lang.String" column="c_nickname"/>
         <property name="locations" type="java.lang.String" column="c_locations"/>
         <property name="fscstr" type="java.lang.String" column="FSCstr"/>
-        <property name="reviewuser" type="java.lang.String" column="reviewuser"/>
         <property name="stuid" type="java.lang.String" column="stuid"/>
         <property name="email" type="java.lang.String" column="email"/>
         <property name="QQ" type="java.lang.String" column="QQ"/>
@@ -22,6 +21,7 @@
         <property name="alipayid" type="java.lang.String" column="alipayid"/>
         <property name="refreshToken" type="java.lang.String" column="refreshToken"/>
         <property name="authToken" type="java.lang.String" column="authToken"/>
+        <property name="reviewToUser" type="java.lang.String" column="reviewToUser"/>
         <set inverse="true" name="Goods" cascade="all" lazy="false">
             <key column="c_id"/>
             <one-to-many class="Goods"/>
@@ -29,6 +29,10 @@
         <set inverse="true" name="Orders" cascade="all" lazy="false">
             <key column="o_id"/>
             <one-to-many class="Orders"/>
+        </set>
+        <set inverse="true" name="Review" cascade="all" lazy="false">
+            <key column="r_id"/>
+            <one-to-many class="Review"/>
         </set>
     </class>
 </hibernate-mapping>

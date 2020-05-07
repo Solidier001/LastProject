@@ -18,7 +18,6 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import daomain.User;
 import pojo.AlipayToken;
 import pojo.BzContent;
-
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.OutputStream;
